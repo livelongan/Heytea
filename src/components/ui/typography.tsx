@@ -1,55 +1,60 @@
 import * as React from 'react'
 
-import { cn } from '../../../utils/utils'
+import { cn } from '../../utils/utils'
 
-const TitleLevel1 = React.forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<'h1'>>(
+export const TitleLevel1 = React.forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<'h1'>>(
     ({ className, ...props }, ref) => (
         <h1
             ref={ref}
             className={cn('text-3xl font-semibold text-slate-900', className)}
+            data-tag={'title-level-1'}
             {...props}
         />
     ),
 )
 TitleLevel1.displayName = 'TitleLevel1'
 
-const TitleLevel2 = React.forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<'h2'>>(
+export const TitleLevel2 = React.forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<'h2'>>(
     ({ className, ...props }, ref) => (
         <h2
             ref={ref}
             className={cn('text-2xl font-medium text-slate-900', className)}
+            data-tag={'title-level-2'}
             {...props}
         />
     ),
 )
 TitleLevel2.displayName = 'TitleLevel2'
 
-const TitleLevel3 = React.forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<'h3'>>(
+export const TitleLevel3 = React.forwardRef<HTMLHeadingElement, React.ComponentPropsWithoutRef<'h3'>>(
     ({ className, ...props }, ref) => (
         <h3
             ref={ref}
             className={cn('text-xl font-medium text-slate-900', className)}
+            data-tag={'title-level-3'}
             {...props}
         />
     ),
 )
 TitleLevel3.displayName = 'TitleLevel3'
 
-const TextSmall = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
+export const TextSmall = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
     ({ className, ...props }, ref) => (
-        <p
+        <small
             ref={ref}
             className={cn('text-sm text-slate-500', className)}
+            data-tag={'text-small'}
             {...props}
         />
     ),
 )
 TextSmall.displayName = 'TextSmall'
 
-const TextNormal = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
+export const TextNormal = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
     ({ className, ...props }, ref) => (
         <p
             ref={ref} className={cn('text-base text-slate-900', className)}
+            data-tag={'text-normal'}
             {...props}
         />
     ),
@@ -57,33 +62,36 @@ const TextNormal = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWi
 TextNormal.displayName = 'TextNormal'
 
 
-const TextSlate = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
+export const TextSlate = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
     ({ className, ...props }, ref) => (
         <p
             ref={ref}
             className={cn('text-base text-slate-500', className)}
+            data-tag={'text-slate'}
             {...props}
         />
     ),
 )
 TextSlate.displayName = 'TextSlate'
 
-const TextAccent = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
+export const TextAccent = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
     ({ className, ...props }, ref) => (
         <p
             ref={ref}
             className={cn('text-base text-accent-500', className)}
+            data-tag={'text-accent'}
             {...props}
         />
     ),
 )
 TextAccent.displayName = 'TextAccent'
 
-const TextError = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
+export const TextError = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
     ({ className, ...props }, ref) => (
         <p
             ref={ref}
             className={cn('text-base text-red-500', className)}
+            data-tag={'text-error'}
             {...props}
         />
     ),
@@ -92,15 +100,15 @@ TextError.displayName = 'TextError'
 
 
 
-const TextBase = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
+export const TextBase = React.forwardRef<HTMLParagraphElement, React.ComponentPropsWithoutRef<'p'>>(
     ({ className, ...props }, ref) => (
         <span
             ref={ref}
             className={cn('text-base', className)}
+            data-tag={'text-base'}
             {...props}
         />
     ),
 )
 TextBase.displayName = 'TextBase'
 
-export { TitleLevel1, TitleLevel2, TitleLevel3, TextNormal, TextSmall, TextError, TextSlate, TextAccent, TextBase }

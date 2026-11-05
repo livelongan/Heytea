@@ -3,10 +3,13 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { fetchExamResult } from '../api/api'
-import { ButtonPrimary } from '../components/ui/button'
+import { FlexColumn, FlexRow } from '../components/ui/wrapper'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
-import { TextNormal, TextSmall, TitleLevel1 } from '../components/ui/typography'
 import type { ExamAnswer, ExamResult } from '../types'
+import { Accordion } from '../components/ui/accordion'
+import { ButtonPrimary } from '../components/ui/button'
+import { LinkText } from '../components/ui/link'
+import { TitleLevel1, TextNormal, TextSmall, TextBase } from '../components/ui/typography'
 
 function answerLabel(
     answer: ExamAnswer | null,
@@ -53,9 +56,9 @@ export default function ExamResultPage() {
             <section data-ui="exam-result.error" role="alert" className="space-y-4">
                 <TitleLevel1 className="text-2xl">Result unavailable</TitleLevel1>
                 <TextNormal>{error}</TextNormal>
-                <Link data-testid="exam-result-error-history" to="/exam/history">
+                <LinkText data-testid="exam-result-error-history" to="/exam/history">
                     <ButtonPrimary>View exam history</ButtonPrimary>
-                </Link>
+                </LinkText>
             </section>
         )
     if (!result)
@@ -71,99 +74,73 @@ export default function ExamResultPage() {
         <div data-ui="exam-result.page" className="mx-auto max-w-5xl space-y-10">
             <section
                 data-ui="exam-result.summary"
-                className="mx-auto flex min-h-[65vh] max-w-2xl flex-col items-center justify-center px-4 py-10 text-center"
+                className="mx-auto max-w-2xl px-4 py-10"
                 aria-label="Exam completion summary"
             >
-                <span className="mb-8 grid h-20 w-20 place-items-center rounded-full bg-emerald-100 text-emerald-700">
-                    <CircleCheck className="h-10 w-10" aria-hidden="true" />
-                </span>
-                <TitleLevel1
-                    data-ui="exam-result.heading"
-                    className="text-3xl font-bold tracking-tight"
-                >
-                    {result.submittedAutomatically
-                        ? "Time's up, your exam is complete"
-                        : 'Your exam is complete'}
-                </TitleLevel1>
-                {/* <p className="mt-4 max-w-lg text-base leading-7 text-slate-500">
-                    {result.submittedAutomatically
-                        ? 'Your exam was submitted automatically, and your answers have been saved.'
-                        : 'Your exam has been submitted, and your answers have been saved.'}
-                </p> */}
-                <div
-                    data-ui="exam-result.metric.score"
-                    className="mt-10 flex items-baseline justify-center gap-2 text-emerald-700"
-                >
-                    <span data-testid="exam-result-score" className="text-7xl font-semibold">
-                        {result.score}
+                <FlexColumn className="min-h-[65vh] items-center justify-center gap-0 text-center">
+                    <span className="mb-8 grid h-20 w-20 place-items-center rounded-full bg-emerald-100 text-emerald-700">
+                        <CircleCheck className="h-10 w-10" aria-hidden="true" />
                     </span>
-                    <span className="text-lg">points</span>
-                </div>
-                <TextSmall data-ui="exam-result.answer-counts" className="mt-8">
-                    Answered {answeredCount} <span className="px-1">·</span> Correct{' '}
-                    {result.correctCount}
-                    <span className="text-slate-500 mx-5">
-                        Duration: {formatDuration(result.durationSeconds)}
-                    </span>
-                    <Link
+                    <TitleLevel1
+                        data-ui="exam-result.heading"
+                        className="text-3xl font-bold tracking-tight"
+                    >
+                        {result.submittedAutomatically
+                            ? "Time's up, your exam is complete"
+                            : 'Your exam is complete'}
+                    </TitleLevel1>
+                    <FlexRow
+                        data-ui="exam-result.metric.score"
+                        className="mt-10 items-baseline justify-center gap-2 text-emerald-700"
+                    >
+                        <span data-testid="exam-result-score" className="text-7xl font-semibold">
+                            {result.score}
+                        </span>
+                        <span className="text-lg">points</span>
+                    </FlexRow>
+                    <TextSmall data-ui="exam-result.answer-counts" className="mt-8">
+                        Answered {answeredCount} <span className="px-1">·</span> Correct{' '}
+                        {result.correctCount}
+                        <span className="text-slate-500 mx-5">
+                            Duration: {formatDuration(result.durationSeconds)}
+                        </span>
+                    </TextSmall>
+                    <LinkText
                         data-ui="exam-result.history-link"
                         data-testid="exam-result-history"
                         to="/exam/history"
-                        className="text-slate-500 underline underline-offset-4 hover:text-slate-900"
+                        className="mt-8"
                     >
                         Exam history
-                    </Link>
-                </TextSmall>
-                <Link
-                    data-ui="exam-result.restart"
-                    data-testid="exam-result-restart"
-                    to="/exam/new"
-                    className="mt-6"
-                >
-                    <ButtonPrimary className="min-w-32 bg-sky-800 hover:bg-sky-700">
-                        Restart
-                    </ButtonPrimary>
-                </Link>
-                {/* <div className="mt-4 flex items-center gap-4 text-sm">
+                    </LinkText>
                     <Link
-                        data-ui="exam-result.history-link"
-                        data-testid="exam-result-history"
-                        to="/exam/history"
-                        className="text-slate-500 underline underline-offset-4 hover:text-slate-900"
+                        data-ui="exam-result.restart"
+                        data-testid="exam-result-restart"
+                        to="/exam/new"
+                        className="mt-6"
                     >
-                        Exam history
+                        <ButtonPrimary className="min-w-32 bg-sky-800 hover:bg-sky-700">
+                            Restart
+                        </ButtonPrimary>
                     </Link>
-                    <span aria-hidden="true" className="text-slate-300">
-                        ·
-                    </span>
-                    <span className="text-slate-500">
-                        Duration: {formatDuration(result.durationSeconds)}
-                    </span>
-                </div> */}
+                </FlexColumn>
             </section>
 
-            <details data-ui="exam-result.question-review" className="group">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 rounded-lg border border-slate-200 bg-white px-5 py-4 shadow-sm transition-colors hover:border-sky-300 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 [&::-webkit-details-marker]:hidden">
-                    <span className="flex min-w-0 items-center gap-3">
-                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-md bg-sky-100 text-sky-800">
-                            <ListChecks className="h-5 w-5" aria-hidden="true" />
+            <Accordion
+                data-ui="exam-result.question-review"
+                icon={<ListChecks className="h-5 w-5" aria-hidden="true" />}
+                title="Review answers"
+                subtitle={
+                    <>
+                        View correct answers and explanations
+                        <span className="ml-2 hidden sm:inline">
+                            · {result.totalQuestions} questions
                         </span>
-                        <span className="min-w-0">
-                            <span className="block font-semibold">Review answers</span>
-                            <span className="mt-0.5 block text-sm font-normal text-slate-500">
-                                View correct answers and explanations
-                            </span>
-                        </span>
-                    </span>
-                    <span className="flex shrink-0 items-center gap-2 text-sm text-slate-500">
-                        <span className="hidden sm:inline">{result.totalQuestions} questions</span>
-                        <ChevronDown
-                            className="h-5 w-5 text-sky-800 transition-transform duration-200 group-open:rotate-180"
-                            aria-hidden="true"
-                        />
-                    </span>
-                </summary>
-                <div className="mt-4 space-y-4">
+                    </>
+                }
+                className="border-0"
+            >
+                <div className="space-y-4 pt-4">
                     {result.questions.map((item, index) => (
                         <Card
                             key={item.question.id}
@@ -171,24 +148,14 @@ export default function ExamResultPage() {
                             data-testid={`exam-result-question-${item.question.id}`}
                             className={item.isCorrect ? 'border-emerald-300' : 'border-red-300'}
                         >
-                            <CardHeader>
-                                <div className="flex items-start justify-between gap-3">
-                                    <div>
-                                        <CardDescription>
-                                            Question {index + 1} · {item.question.type}
-                                        </CardDescription>
-                                        <CardTitle className="mt-2 text-lg">
-                                            {item.question.stem}
-                                        </CardTitle>
-                                        {item.question.description && (
-                                            <TextSmall className="mt-2 text-sm leading-6 text-slate-600">
-                                                {item.question.description}
-                                            </TextSmall>
-                                        )}
-                                    </div>
+                            <CardHeader className="space-y-5">
+                                <FlexRow className="items-center justify-between gap-3">
+                                    <CardDescription>
+                                        Question {index + 1} · {item.question.type}
+                                    </CardDescription>
                                     <span
                                         data-ui="exam-result.answer-status"
-                                        className={`inline-flex shrink-0 items-center gap-1.5 rounded-sm px-2 py-1 text-sm font-semibold ${item.isCorrect ? 'bg-emerald-100 text-emerald-900' : 'bg-red-100 text-red-900'}`}
+                                        className={`inline-flex shrink-0 items-center gap-1.5 rounded-md px-3 py-2 text-sm font-semibold ${item.isCorrect ? 'bg-emerald-100 text-emerald-900' : 'bg-red-100 text-red-900'}`}
                                     >
                                         {item.isCorrect ? (
                                             <CircleCheck className="h-4 w-4" aria-hidden="true" />
@@ -197,26 +164,50 @@ export default function ExamResultPage() {
                                         )}
                                         {item.isCorrect ? 'Correct' : 'Incorrect'}
                                     </span>
+                                </FlexRow>
+                                <div>
+                                    <CardTitle className="text-xl leading-7">
+                                        {item.question.stem}
+                                    </CardTitle>
+                                    {item.question.description && (
+                                        <TextSmall className="mt-2 text-sm leading-6 text-slate-600">
+                                            {item.question.description}
+                                        </TextSmall>
+                                    )}
                                 </div>
                             </CardHeader>
-                            <CardContent className="space-y-2 text-sm">
-                                <TextNormal className="text-sm">
-                                    <span className="font-semibold">Your answer:</span>{' '}
-                                    {answerLabel(item.answer, item.question.options)}
-                                </TextNormal>
-                                <TextNormal className="text-sm">
-                                    <span className="font-semibold">Correct answer:</span>{' '}
-                                    {answerLabel(item.correctAnswer, item.question.options)}
-                                </TextNormal>
-                                <TextNormal className="border-t border-slate-200 pt-3 text-sm text-slate-700">
-                                    <span className="font-semibold">Explanation:</span>{' '}
-                                    {item.explanation}
-                                </TextNormal>
+                            <CardContent className="space-y-3">
+                                <div className="border-t border-slate-200 pt-4">
+                                    <TextNormal className="text-lg">
+                                        <TextBase className="font-semibold">Your answer:</TextBase>{' '}
+                                        {answerLabel(item.answer, item.question.options)}
+                                    </TextNormal>
+                                    <TextNormal className="mt-3 text-lg">
+                                        <TextBase className="font-semibold">
+                                            Correct answer:
+                                        </TextBase>{' '}
+                                        {answerLabel(item.correctAnswer, item.question.options)}
+                                    </TextNormal>
+                                </div>
+                                <details className="group">
+                                    <summary className="cursor-pointer list-none py-1 font-semibold text-slate-800 hover:text-sky-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sky-600 [&::-webkit-details-marker]:hidden">
+                                        <FlexRow className="items-center justify-end gap-2">
+                                            <span>Explanation</span>
+                                            <ChevronDown
+                                                className="h-5 w-5 transition-transform duration-200 group-open:rotate-180"
+                                                aria-hidden="true"
+                                            />
+                                        </FlexRow>
+                                    </summary>
+                                    <TextNormal className="border-t border-slate-200 pt-3">
+                                        {item.explanation}
+                                    </TextNormal>
+                                </details>
                             </CardContent>
                         </Card>
                     ))}
                 </div>
-            </details>
+            </Accordion>
         </div>
     )
 }

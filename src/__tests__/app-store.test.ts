@@ -30,7 +30,7 @@ describe('app store', () => {
     })
 
     it('logs in and loads the dashboard state', async () => {
-        await useAppStore.getState().login('student@example.com', 'secret123')
+        await useAppStore.getState().login('student@example.com', '123456')
 
         expect(useAppStore.getState().user?.email).toBe('student@example.com')
         expect(useAppStore.getState().scenarios[0].title).toBe('Foundations Lab')
@@ -49,7 +49,7 @@ describe('app store', () => {
     })
 
     it('stores the login token and clears authentication on logout', async () => {
-        await useAppStore.getState().login('student@example.com', 'secret123')
+        await useAppStore.getState().login('student@example.com', '123456')
         expect(useAppStore.getState().token).toBe('demo-token')
         localStorage.setItem('learning-lab-exam-draft', '{"attemptId":"unfinished"}')
         useAppStore.getState().logout()

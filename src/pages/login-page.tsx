@@ -1,14 +1,15 @@
-import { type FormEvent, useState } from 'react'
+import {   useState, type  SubmitEvent, } from 'react'
 import { Eye, EyeOff, GraduationCap, UserRound } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { ButtonPrimary } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
-import { TextSmall } from '../components/ui/typography'
 import { useAppStore } from '../store/app-store'
 import ThemeToggle from '../components/theme-toggle'
+import { FlexRow } from '../components/ui/wrapper'
+import { TextSmall } from '../components/ui/typography'
+import { ButtonPrimary } from '../components/ui/button'
 
 type FieldErrors = { email?: string; password?: string }
 
@@ -22,7 +23,7 @@ function validateCredentials(email: string, password: string): FieldErrors {
     }
 
     if (!password) errors.password = 'Password is required.'
-    else if (password.length < 8 || password.length > 128) {
+    else if (password.length < 6 || password.length > 128) {
         errors.password = 'Password must be 8 to 128 characters.'
     }
 
@@ -34,13 +35,13 @@ export default function LoginPage() {
     const location = useLocation()
     const login = useAppStore((state) => state.login)
     const [email, setEmail] = useState('student@example.com')
-    const [password, setPassword] = useState('secret123')
+    const [password, setPassword] = useState('123456')
     const [showPassword, setShowPassword] = useState(false)
     const [errors, setErrors] = useState<FieldErrors>({})
     const [requestError, setRequestError] = useState('')
     const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: SubmitEvent<HTMLFormElement>) => {
         event.preventDefault()
         const validationErrors = validateCredentials(email, password)
         setErrors(validationErrors)
@@ -72,9 +73,9 @@ export default function LoginPage() {
     }
 
     return (
-        <div
+        <FlexRow
             data-ui="login.page"
-            className="flex min-h-screen items-center justify-center bg-slate-100 p-6"
+            className="min-h-screen items-center justify-center gap-0 bg-slate-100 p-6"
         >
             <div className="fixed right-5 top-5">
                 <ThemeToggle />
@@ -84,7 +85,7 @@ export default function LoginPage() {
                     <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
                         <GraduationCap className="h-6 w-6" aria-hidden="true" />
                     </div>
-                    <CardTitle className="text-2xl">Academy portal</CardTitle>
+                    <CardTitle className="text-2xl">Learing React</CardTitle>
                     <CardDescription>
                         Sign in to continue your learning track and review your exam status.
                     </CardDescription>
@@ -193,6 +194,6 @@ export default function LoginPage() {
                     </form>
                 </CardContent>
             </Card>
-        </div>
+        </FlexRow>
     )
 }

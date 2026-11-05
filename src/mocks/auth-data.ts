@@ -10,7 +10,7 @@ export type MockAccount = {
 export const mockAccounts: MockAccount[] = [
     {
         email: 'student@example.com',
-        password: 'secret123',
+        password: '123456',
         token: 'demo-token',
         user: {
             id: 'u-demo',

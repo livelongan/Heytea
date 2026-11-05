@@ -2,9 +2,14 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { fetchExamQuestions, submitExamAttempt } from '../api/api'
-import { ButtonFlat, ButtonPrimary, ButtonSecondary } from '../components/ui/button'
+import {
+    ButtonFlat,
+    ButtonPrimary,
+    ButtonSecondary,
+} from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
-import { TextNormal, TextSmall, TitleLevel1, TitleLevel2 } from '../components/ui/typography'
+import { TextNormal, TextSmall, TitleLevel1, TitleLevel2, TextError, TextSlate }
+    from '../components/ui/typography'
 import type { ExamAnswer, ExamDraft, ExamQuestion } from '../types'
 import {
     EXAM_DRAFT_KEY,
@@ -13,7 +18,7 @@ import {
     readExamDraft,
     saveExamDraft,
 } from '../utils/exam-session'
-import { TextAccent, TextBase, TextError, TextSlate } from '../components/ui'
+import { FlexRow } from '../components/ui/wrapper'
 
 function formatTime(milliseconds: number) {
     const totalSeconds = Math.max(0, Math.ceil(milliseconds / 1000))
@@ -195,9 +200,9 @@ export default function ExamPage() {
             data-ui="exam.page"
             className="mx-auto grid max-w-7xl gap-5 md:grid-cols-[minmax(0,1fr)_260px] md:gap-6"
         >
-            <div
+            <FlexRow
                 data-ui="exam.heading"
-                className="flex items-center justify-between gap-4 border-b border-slate-200 pb-4 md:col-span-2"
+                className="items-center justify-between gap-4 border-b border-slate-200 pb-4 md:col-span-2"
             >
                 <div>
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
@@ -205,7 +210,7 @@ export default function ExamPage() {
                     </p>
                     <TitleLevel1 className="mt-1 text-xl">Online assessment</TitleLevel1>
                 </div>
-            </div>
+            </FlexRow>
 
             <section data-ui="exam.workspace" className="min-w-0 space-y-5">
                 {remaining <= 60_000 && remaining > 0 && (
@@ -254,9 +259,9 @@ export default function ExamPage() {
 
                 <Card data-ui="exam.question-card">
                     <CardHeader className="space-y-0">
-                        <div
+                        <FlexRow
                             data-ui="exam.question-number"
-                            className="mb-3 flex items-center justify-between"
+                            className="mb-3 items-center justify-between gap-0"
                         >
                             <TextSmall>Total score: 100 points</TextSmall>
                             <p
@@ -268,7 +273,7 @@ export default function ExamPage() {
                                 </span>{' '}
                                 / {questions.length}
                             </p>
-                        </div>
+                        </FlexRow>
                         <CardTitle data-ui="exam.question-prompt" className="text-lg leading-7">
                             {currentQuestion.stem}
                         </CardTitle>
@@ -280,7 +285,7 @@ export default function ExamPage() {
                                 {currentQuestion.description}
                             </TextSmall>
                         )}
-                        <div className="mt-3 flex items-center justify-between gap-3">
+                        <FlexRow className="mt-3 items-center justify-between gap-3">
                             <span
                                 data-ui="exam.question-type"
                                 className="rounded-sm bg-sky-100 px-2 py-1 text-xs font-medium text-sky-900"
@@ -288,10 +293,10 @@ export default function ExamPage() {
                                 {currentQuestion.type === 'multiple'
                                     ? 'Multiple choice'
                                     : currentQuestion.type === 'single'
-                                      ? 'Single choice'
-                                      : currentQuestion.type === 'judgment'
-                                        ? 'True or false'
-                                        : 'Written response'}
+                                        ? 'Single choice'
+                                        : currentQuestion.type === 'judgment'
+                                            ? 'True or false'
+                                            : 'Written response'}
                             </span>
                             <ButtonFlat
                                 data-ui="exam.question.mark-review"
@@ -303,7 +308,7 @@ export default function ExamPage() {
                             >
                                 {isMarked ? 'Marked for review' : 'Mark for review'}
                             </ButtonFlat>
-                        </div>
+                        </FlexRow>
                     </CardHeader>
                     <CardContent className="space-y-3">
                         {currentQuestion.options.map((option, index) => {
@@ -311,35 +316,39 @@ export default function ExamPage() {
                             return (
                                 <label
                                     key={option.id}
-                                    className={`flex cursor-pointer items-start gap-3 rounded-md border px-4 py-3 transition-colors ${selected ? 'border-sky-700 bg-sky-50' : 'border-slate-200 hover:border-slate-400'}`}
+                                    className={`block cursor-pointer rounded-md border px-4 py-3 transition-colors ${selected ? 'border-sky-700 bg-sky-50' : 'border-slate-200 hover:border-slate-400'}`}
                                 >
-                                    <input
-                                        data-ui={`exam.answer-input.${currentQuestion.id}.${option.id}`}
-                                        data-testid={`exam-answer-${currentQuestion.id}-${option.id}`}
-                                        type={
-                                            currentQuestion.type === 'multiple'
-                                                ? 'checkbox'
-                                                : 'radio'
-                                        }
-                                        name={`answer-${currentQuestion.id}`}
-                                        value={option.id}
-                                        checked={selected}
-                                        onChange={() => toggleOption(currentQuestion, option.id)}
-                                        className="mt-1 accent-sky-800"
-                                    />
-                                    <span
-                                        data-option-label={`${String.fromCharCode(65 + index)}.`}
-                                        className="leading-6 before:mr-2 before:font-medium before:text-slate-500 before:content-[attr(data-option-label)]"
-                                    >
-                                        {option.text}
-                                    </span>
+                                    <FlexRow className="items-start gap-3">
+                                        <input
+                                            data-ui={`exam.answer-input.${currentQuestion.id}.${option.id}`}
+                                            data-testid={`exam-answer-${currentQuestion.id}-${option.id}`}
+                                            type={
+                                                currentQuestion.type === 'multiple'
+                                                    ? 'checkbox'
+                                                    : 'radio'
+                                            }
+                                            name={`answer-${currentQuestion.id}`}
+                                            value={option.id}
+                                            checked={selected}
+                                            onChange={() =>
+                                                toggleOption(currentQuestion, option.id)
+                                            }
+                                            className="mt-1 accent-sky-800"
+                                        />
+                                        <span
+                                            data-option-label={`${String.fromCharCode(65 + index)}.`}
+                                            className="leading-6 before:mr-2 before:font-medium before:text-slate-500 before:content-[attr(data-option-label)]"
+                                        >
+                                            {option.text}
+                                        </span>
+                                    </FlexRow>
                                 </label>
                             )
                         })}
                     </CardContent>
                 </Card>
 
-                <div className="flex flex-wrap items-center justify-between gap-3 px-0 md:px-5">
+                <FlexRow className="flex-wrap items-center justify-between gap-3 px-0 md:px-5">
                     <TextSlate
                         data-ui="exam.question-points"
                         data-testid="exam-question-points"
@@ -347,7 +356,7 @@ export default function ExamPage() {
                     >
                         Score: {currentQuestion.points} points
                     </TextSlate>
-                    <div className="flex flex-wrap justify-end gap-3">
+                    <FlexRow className="flex-wrap justify-end gap-3">
                         <ButtonSecondary
                             data-ui="exam.navigation.previous"
                             data-testid="exam-previous"
@@ -377,8 +386,8 @@ export default function ExamPage() {
                                 Next
                             </ButtonPrimary>
                         )}
-                    </div>
-                </div>
+                    </FlexRow>
+                </FlexRow>
                 {!hasAnsweredCurrentQuestion && draft.currentIndex < questions.length - 1 && (
                     <TextError role="status" className="text-right">
                         Answer this question to continue.
@@ -444,27 +453,27 @@ export default function ExamPage() {
                                 )
                             })}
                         </div>
-                        <TextSmall className="mt-4 flex flex-wrap gap-3">
-                            <TextBase className="flex items-center gap-1">
-                                <i className="h-2.5 w-2.5 rounded-full bg-slate-300" />
+                        <FlexRow className="mt-4 flex-wrap gap-3">
+                            <TextSmall>
+                                <i className="mr-1 inline-block h-2.5 w-2.5 rounded-full bg-slate-300 align-middle" />
                                 Unanswered
-                            </TextBase>
-                            <TextBase className="flex items-center gap-1">
-                                <i className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
+                            </TextSmall>
+                            <TextSmall>
+                                <i className="mr-1 inline-block h-2.5 w-2.5 rounded-full bg-emerald-500 align-middle" />
                                 Answered
-                            </TextBase>
-                            <TextBase className="flex items-center gap-1">
-                                <i className="h-2.5 w-2.5 rounded-full bg-amber-500" />
+                            </TextSmall>
+                            <TextSmall>
+                                <i className="mr-1 inline-block h-2.5 w-2.5 rounded-full bg-amber-500 align-middle" />
                                 Marked
-                            </TextBase>
-                        </TextSmall>
+                            </TextSmall>
+                        </FlexRow>
                     </CardContent>
-                </Card> 
+                </Card>
             </aside>
 
             {showConfirmation && (
-                <div
-                    className="fixed inset-0 z-30 flex items-center justify-center bg-slate-950/40 p-4"
+                <FlexRow
+                    className="fixed inset-0 z-30 items-center justify-center gap-0 bg-slate-950/40 p-4"
                     role="presentation"
                 >
                     <section
@@ -481,7 +490,7 @@ export default function ExamPage() {
                             You have answered {answeredCount} of {questions.length} questions. You
                             cannot return to the answer page after submitting.
                         </TextSmall>
-                        <div className="flex justify-end gap-3">
+                        <FlexRow className="mt-5 justify-end gap-3">
                             <ButtonSecondary
                                 data-ui="exam.submit-dialog.cancel"
                                 data-testid="exam-submit-cancel"
@@ -500,9 +509,9 @@ export default function ExamPage() {
                             >
                                 Confirm
                             </ButtonPrimary>
-                        </div>
+                        </FlexRow>
                     </section>
-                </div>
+                </FlexRow>
             )}
         </div>
     )

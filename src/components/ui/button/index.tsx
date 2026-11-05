@@ -1,8 +1,0 @@
-export { ButtonFlat } from './button-flat'
-export type { ButtonFlatProps } from './button-flat'
-export { ButtonOutlined } from './button-outlined'
-export type { ButtonOutlinedProps } from './button-outlined'
-export { ButtonPrimary } from './button-primary'
-export type { ButtonPrimaryProps } from './button-primary'
-export { ButtonSecondary } from './button-secondary'
-export type { ButtonSecondaryProps } from './button-secondary'

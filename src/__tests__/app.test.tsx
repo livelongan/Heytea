@@ -27,7 +27,7 @@ describe('app requirements', () => {
         )
 
         expect(screen.getByLabelText(/email/i)).toHaveValue('student@example.com')
-        expect(screen.getByLabelText('Password')).toHaveValue('secret123')
+        expect(screen.getByLabelText('Password')).toHaveValue('123456')
         expect(screen.getByTestId('login-email')).toBeInTheDocument()
         expect(screen.getByTestId('login-password')).toBeInTheDocument()
         expect(screen.getByTestId('login-password-visibility')).toBeInTheDocument()
@@ -112,7 +112,7 @@ describe('app requirements', () => {
         await user.click(within(drawer).getByTestId('logout-mobile'))
 
         expect(useAppStore.getState().user).toBeNull()
-        expect(await screen.findByText('Academy portal')).toBeInTheDocument()
+        expect(await screen.findByText('Learing React')).toBeInTheDocument()
     })
 
     it('opens tablet navigation in a left drawer and closes after navigation', async () => {
@@ -256,7 +256,7 @@ describe('app requirements', () => {
         await user.clear(screen.getByLabelText(/email/i))
         await user.type(screen.getByLabelText(/email/i), 'unknown@example.com')
         await user.clear(screen.getByLabelText('Password'))
-        await user.type(screen.getByLabelText('Password'), 'secret123')
+        await user.type(screen.getByLabelText('Password'), '123456')
         await user.click(screen.getByRole('button', { name: /sign in/i }))
 
         expect(await screen.findByText(/invalid credentials/i)).toBeInTheDocument()
@@ -282,7 +282,7 @@ describe('app requirements', () => {
         await user.click(screen.getAllByRole('button', { name: /log out/i })[0])
         await screen.findByLabelText(/email/i)
         expect(screen.getByLabelText(/email/i)).toHaveValue('student@example.com')
-        expect(screen.getByLabelText('Password')).toHaveValue('secret123')
+        expect(screen.getByLabelText('Password')).toHaveValue('123456')
         await user.click(screen.getByRole('button', { name: /sign in/i }))
 
         expect(
@@ -339,7 +339,7 @@ describe('app requirements', () => {
         await user.clear(screen.getByLabelText(/email/i))
         await user.type(screen.getByLabelText(/email/i), 'student@example.com')
         await user.clear(screen.getByLabelText('Password'))
-        await user.type(screen.getByLabelText('Password'), 'secret123')
+        await user.type(screen.getByLabelText('Password'), '123456')
         await user.click(screen.getByRole('button', { name: /sign in/i }))
 
         expect(await screen.findByRole('heading', { name: /my exams/i })).toBeInTheDocument()
@@ -381,7 +381,7 @@ describe('app requirements', () => {
         await user.clear(screen.getByLabelText(/email/i))
         await user.type(screen.getByLabelText(/email/i), 'student@example.com')
         await user.clear(screen.getByLabelText('Password'))
-        await user.type(screen.getByLabelText('Password'), 'secret123')
+        await user.type(screen.getByLabelText('Password'), '123456')
         await user.click(screen.getByRole('button', { name: /sign in/i }))
         await screen.findByRole('heading', { name: /learning dashboard/i })
         await user.click(screen.getByRole('link', { name: /foundations lab/i }))
@@ -427,7 +427,7 @@ describe('app requirements', () => {
             mobileCountdown!.compareDocumentPosition(questionCard!) &
                 Node.DOCUMENT_POSITION_FOLLOWING,
         ).toBeTruthy()
-        expect(screen.getByText('Question 1 / 20')).toBeInTheDocument()
+        expect(screen.getByLabelText('Question 1 of 20')).toBeInTheDocument()
         const questionNumber = document.querySelector('[data-ui="exam.question-number"]')
         const questionPrompt = document.querySelector('[data-ui="exam.question-prompt"]')
         expect(
@@ -462,7 +462,7 @@ describe('app requirements', () => {
         expect(secondQuestionButton).toBeEnabled()
         expect(thirdQuestionButton).toBeDisabled()
         await user.click(nextQuestionButton)
-        expect(screen.getByText(/question 2 \/ 20/i)).toBeInTheDocument()
+        expect(screen.getByLabelText('Question 2 of 20')).toBeInTheDocument()
         await user.click(screen.getByRole('button', { name: /previous question/i }))
         expect(screen.getByLabelText(/usestate/i)).toBeChecked()
         await user.click(nextQuestionButton)
@@ -495,7 +495,7 @@ describe('app requirements', () => {
         await user.click(nextQuestionButton)
         await user.click(screen.getByLabelText(/added to every component/i))
         await user.click(nextQuestionButton)
-        expect(screen.getByText(/question 12 \/ 20/i)).toBeInTheDocument()
+        expect(screen.getByLabelText('Question 12 of 20')).toBeInTheDocument()
         await user.click(screen.getByTestId('exam-answer-react-012-a'))
         await user.click(nextQuestionButton)
         for (let questionNumber = 13; questionNumber <= 20; questionNumber += 1) {
@@ -507,7 +507,7 @@ describe('app requirements', () => {
             )
             if (questionNumber < 20) await user.click(nextQuestionButton)
         }
-        expect(screen.getByText(/question 20 \/ 20/i)).toBeInTheDocument()
+        expect(screen.getByLabelText('Question 20 of 20')).toBeInTheDocument()
         expect(screen.queryByRole('button', { name: /next question/i })).not.toBeInTheDocument()
         expect(screen.getAllByRole('button', { name: /submit exam/i })).toHaveLength(1)
         expect(screen.getByTestId('exam-primary-action')).toHaveTextContent(/submit exam/i)
@@ -534,9 +534,9 @@ describe('app requirements', () => {
         )
         expect(screen.getByTestId('exam-result-restart')).toHaveAttribute('href', '/exam/new')
         await user.click(screen.getByText('Review answers'))
-        expect(document.querySelector('[data-ui="exam-result.question-review"]')).toHaveAttribute(
-            'open',
-        )
+        expect(
+            screen.getByRole('button', { name: /review answers/i }),
+        ).toHaveAttribute('aria-expanded', 'true')
         const resultStatuses = Array.from(
             document.querySelectorAll('[data-ui="exam-result.answer-status"]'),
         )
@@ -554,6 +554,11 @@ describe('app requirements', () => {
                     status.querySelector('.lucide-circle-x'),
             ),
         ).toBe(true)
+        const explanationToggle = screen.getAllByText('Explanation')[0]
+        expect(explanationToggle.closest('details')).not.toHaveAttribute('open')
+        await user.click(explanationToggle)
+        expect(explanationToggle.closest('details')).toHaveAttribute('open')
+        expect(explanationToggle.closest('details')).toHaveTextContent(/React/i)
         expect(localStorage.getItem('learning-lab-exam-draft')).toBeNull()
 
         await user.click(screen.getAllByRole('link', { name: /my exams/i })[0])
@@ -598,7 +603,7 @@ describe('app requirements', () => {
             </MemoryRouter>,
         )
 
-        expect(await screen.findByText(/question 9 \/ 20/i)).toBeInTheDocument()
+        expect(await screen.findByLabelText('Question 9 of 20')).toBeInTheDocument()
         expect(document.querySelector('[data-ui="exam.question-type"]')).toHaveTextContent(
             'Single choice',
         )
@@ -615,7 +620,7 @@ describe('app requirements', () => {
             ],
         ).toBe('a')
         await user.click(nextQuestionButton)
-        expect(screen.getByText(/question 10 \/ 20/i)).toBeInTheDocument()
+        expect(screen.getByLabelText('Question 10 of 20')).toBeInTheDocument()
         await user.click(screen.getByRole('button', { name: /previous question/i }))
         expect(screen.getByTestId('exam-answer-react-009-a')).toBeChecked()
     })

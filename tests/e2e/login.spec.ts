@@ -4,7 +4,7 @@ test('user can sign in and view the learning dashboard', async ({ page }) => {
     await page.goto('/')
 
     await page.getByLabel('Email').fill('student@example.com')
-    await page.getByRole('textbox', { name: 'Password' }).fill('secret123')
+    await page.getByRole('textbox', { name: 'Password' }).fill('123456')
     await page.getByRole('button', { name: /sign in/i }).click()
 
     await expect(page.getByRole('heading', { name: /learning dashboard/i })).toBeVisible()
@@ -15,7 +15,7 @@ test('user can restore an exam draft, submit, and review the result', async ({ p
     await page.goto('/')
 
     await page.getByLabel('Email').fill('student@example.com')
-    await page.getByRole('textbox', { name: 'Password' }).fill('secret123')
+    await page.getByRole('textbox', { name: 'Password' }).fill('123456')
     await page.getByRole('button', { name: /sign in/i }).click()
     await page.getByRole('link', { name: /start a new exam/i }).click()
     await page.getByRole('button', { name: /begin exam/i }).click()

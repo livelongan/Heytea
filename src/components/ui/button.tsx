@@ -2,7 +2,7 @@ import * as React from 'react'
 import { Slot } from '@radix-ui/react-slot'
 import { cva, type VariantProps } from 'class-variance-authority'
 
-import { cn } from '../../../utils/utils'
+import { cn } from '../../utils/utils'
 
 const buttonVariants = cva(
     'inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0',
@@ -40,7 +40,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <Comp
                 className={cn(buttonVariants({ variant, size, className }))}
                 ref={ref as never}
-                data-ui="ui.button"
+                data-tag="button"
                 {...props}
             />
         )
@@ -48,4 +48,32 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 )
 Button.displayName = 'Button'
 
-export { Button }
+export type ButtonFlatProps = Omit<ButtonProps, 'variant'>
+
+export const ButtonFlat = React.forwardRef<HTMLButtonElement, ButtonFlatProps>((props, ref) => (
+    <Button ref={ref} variant="ghost" data-tag="button-flat" {...props} />
+))
+ButtonFlat.displayName = 'ButtonFlat'
+
+export type ButtonOutlinedProps = Omit<ButtonProps, 'variant'>
+
+export const ButtonOutlined = React.forwardRef<HTMLButtonElement, ButtonOutlinedProps>(
+    (props, ref) => <Button ref={ref} variant="outline" data-tag="button-outlined" {...props} />,
+)
+ButtonOutlined.displayName = 'ButtonOutlined'
+
+export type ButtonPrimaryProps = Omit<ButtonProps, 'variant'>
+
+export const ButtonPrimary = React.forwardRef<HTMLButtonElement, ButtonPrimaryProps>(
+    (props, ref) => <Button ref={ref} variant="default" data-tag="button-primary" {...props} />,
+)
+ButtonPrimary.displayName = 'ButtonPrimary'
+
+export type ButtonSecondaryProps = Omit<ButtonProps, 'variant'>
+
+export const ButtonSecondary = React.forwardRef<HTMLButtonElement, ButtonSecondaryProps>(
+    (props, ref) => (
+        <Button ref={ref} variant="secondary" data-tag="button-secondary" {...props} />
+    ),
+)
+ButtonSecondary.displayName = 'ButtonSecondary'

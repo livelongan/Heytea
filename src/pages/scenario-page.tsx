@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 
-import { ButtonPrimary, ButtonSecondary } from '../components/ui/button'
+import { ButtonPrimary, ButtonSecondary, } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { TextSmall, TitleLevel1, TitleLevel3 } from '../components/ui/typography'
 import { useAppStore } from '../store/app-store'
+import { FlexRow } from '../components/ui/wrapper'
 
 export default function ScenarioPage() {
     const { scenarioId } = useParams()
@@ -22,9 +23,9 @@ export default function ScenarioPage() {
 
     return (
         <div data-ui="scenario.page" className="mx-auto max-w-5xl space-y-6">
-            <div
+            <FlexRow
                 data-ui="scenario.heading"
-                className="flex flex-wrap items-end justify-between gap-4"
+                className="flex-wrap items-end justify-between gap-4"
             >
                 <div>
                     <p className="text-sm font-semibold uppercase text-sky-700">Scenario detail</p>
@@ -33,7 +34,7 @@ export default function ScenarioPage() {
                 <Link data-ui="scenario.back-link" data-testid="scenario-back" to="/dashboard">
                     <ButtonSecondary>Back to dashboard</ButtonSecondary>
                 </Link>
-            </div>
+            </FlexRow>
             <Card data-ui="scenario.lesson-list">
                 <CardHeader>
                     <CardTitle>{scenario.difficulty} path</CardTitle>
@@ -45,10 +46,10 @@ export default function ScenarioPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {scenario.lessons.map((lesson) => (
-                        <div
+                        <FlexRow
                             key={lesson.id}
                             data-ui={`scenario.lesson.${lesson.id}`}
-                            className="flex items-center justify-between gap-4 rounded-md border border-slate-200 px-4 py-3"
+                            className="items-center justify-between gap-4 rounded-md border border-slate-200 px-4 py-3"
                         >
                             <div>
                                 <TitleLevel3 className="text-base">{lesson.title}</TitleLevel3>
@@ -71,7 +72,7 @@ export default function ScenarioPage() {
                                     Mark done
                                 </ButtonPrimary>
                             )}
-                        </div>
+                        </FlexRow>
                     ))}
                 </CardContent>
             </Card>

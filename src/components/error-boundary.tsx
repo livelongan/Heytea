@@ -1,7 +1,8 @@
 import { Component, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-
 import { ButtonPrimary, ButtonSecondary } from './ui/button'
+import { TitleLevel1 } from './ui/typography'
+
 
 type Props = { children: ReactNode }
 type State = { hasError: boolean }
@@ -24,7 +25,7 @@ export default class ErrorBoundary extends Component<Props, State> {
                         data-ui="error-boundary.fallback"
                         className="max-w-md space-y-4 rounded-md border border-slate-200 bg-white p-8 text-center"
                     >
-                        <h1 className="text-2xl font-semibold">Something went wrong</h1>
+                        <TitleLevel1 className="text-2xl">Something went wrong</TitleLevel1>
                         <p className="text-sm text-slate-600">
                             This page could not be displayed. You can try again or return to the
                             dashboard.

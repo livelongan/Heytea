@@ -1,10 +1,15 @@
 import { BookOpen, CheckCircle2, GraduationCap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import { ButtonPrimary, ButtonSecondary } from '../components/ui/button'
+import {
+    ButtonPrimary,
+    ButtonSecondary, 
+} from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { TextNormal, TextSmall, TitleLevel1, TitleLevel3 } from '../components/ui/typography'
 import { useAppStore } from '../store/app-store'
+import { LinkText } from '../components/ui/link'
+import { FlexRow } from '../components/ui/wrapper'
 
 export default function DashboardPage() {
     const scenarios = useAppStore((state) => state.scenarios)
@@ -25,9 +30,9 @@ export default function DashboardPage() {
 
     return (
         <div data-ui="dashboard.page" className="mx-auto max-w-7xl space-y-7">
-            <div
+            <FlexRow
                 data-ui="dashboard.heading"
-                className="flex flex-wrap items-end justify-between gap-4"
+                className="flex-wrap items-end justify-between gap-4"
             >
                 <div>
                     <p className="text-sm font-semibold uppercase text-sky-700">Learning hub</p>
@@ -41,7 +46,7 @@ export default function DashboardPage() {
                         Continue React exam
                     </ButtonPrimary>
                 </Link>
-            </div>
+            </FlexRow>
 
             <section
                 data-ui="dashboard.overview"
@@ -98,15 +103,19 @@ export default function DashboardPage() {
                                 data-testid={`dashboard-scenario-${scenario.id}`}
                                 to={`/scenarios/${scenario.id}`}
                                 onClick={() => selectScenario(scenario.id)}
-                                className={`flex items-center justify-between gap-4 rounded-md border p-4 transition-colors ${scenario.id === currentScenarioId ? 'border-sky-600 bg-sky-50' : 'border-slate-200 hover:border-slate-400'}`}
+                                className={`block rounded-md border p-4 transition-colors ${scenario.id === currentScenarioId ? 'border-sky-600 bg-sky-50' : 'border-slate-200 hover:border-slate-400'}`}
                             >
-                                <span>
-                                    <span className="block font-semibold">{scenario.title}</span>
-                                    <span className="text-sm text-slate-500">
-                                        {scenario.difficulty}
+                                <FlexRow className="items-center justify-between gap-4">
+                                    <span>
+                                        <span className="block font-semibold">{scenario.title}</span>
+                                        <span className="text-sm text-slate-500">
+                                            {scenario.difficulty}
+                                        </span>
                                     </span>
-                                </span>
-                                <span className="text-sm font-semibold">{scenario.progress}%</span>
+                                    <span className="text-sm font-semibold">
+                                        {scenario.progress}%
+                                    </span>
+                                </FlexRow>
                             </Link>
                         ))}
                     </CardContent>
@@ -115,20 +124,22 @@ export default function DashboardPage() {
                 <Card data-ui="dashboard.exam-card">
                     <CardHeader>
                         <CardTitle>React foundations assessment</CardTitle>
+                        <TextSmall>20 questions · 100 points · 60 minutes</TextSmall>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <TextNormal>20 questions · 100 points · 60 minutes</TextNormal>
                         <CardDescription>
-                            React 是一个库。它允许你将组件放在一起，但不关注路由和数据获取。要使用
-                            React 构建整个应用程序，我们建议使用像
-                            <Link to="https://nextjs.org" target="_blank" rel="noopener">
+                            React is a library. It lets you compose components, but it does not
+                            prescribe how to handle routing or data fetching. To build a complete
+                            application with React, we recommend using a full-stack React framework
+                            such as{' '}
+                            <LinkText to="https://nextjs.org" target="_blank" rel="noopener">
                                 Next.js
-                            </Link>{' '}
-                            或
-                            <Link to="https://reactrouter.com" target="_blank" rel="noopener">
+                            </LinkText>{' '}
+                            or{' '}
+                            <LinkText to="https://reactrouter.com" target="_blank" rel="noopener">
                                 React Router
-                            </Link>
-                            这样的全栈 React 框架。{' '}
+                            </LinkText>
+                            .
                         </CardDescription>
 
                         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
@@ -139,20 +150,23 @@ export default function DashboardPage() {
                             >
                                 <ButtonPrimary
                                     className="w-full"
-                                    style={{ width: 'fit-content', minWidth: '260px' }}
+                                style={{ width: 'fit-content', minWidth: '260px' }}
                                 >
                                     Start a new exam
                                 </ButtonPrimary>
                             </Link>
                         </div>
-                        <Link
-                            data-ui="dashboard.exam-history-link"
-                            data-testid="dashboard-exam-history"
-                            to="/exam/history"
-                            className="py-2 block text-center text-sm font-medium text-sky-800 underline"
-                        >
-                            View exam history
-                        </Link>
+                        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                            <LinkText
+                                data-ui="dashboard.exam-history-link"
+                                data-testid="dashboard-exam-history"
+                                to="/exam/history"
+                                className="mx-auto block py-2 text-center font-medium"
+                                    style={{ width: 'fit-content', minWidth: '260px' }}
+                            >
+                                View exam history
+                            </LinkText>
+                        </div>
                     </CardContent>
                 </Card>
             </section>
@@ -167,10 +181,10 @@ export default function DashboardPage() {
                 </CardHeader>
                 <CardContent className="space-y-3">
                     {currentScenario.lessons.map((lesson) => (
-                        <div
+                        <FlexRow
                             key={lesson.id}
                             data-ui={`dashboard.lesson.${lesson.id}`}
-                            className="flex items-center justify-between gap-4 rounded-md border border-slate-200 bg-white px-4 py-3"
+                            className="items-center justify-between gap-4 rounded-md border border-slate-200 bg-white px-4 py-3"
                         >
                             <div>
                                 <TitleLevel3 className="text-base">{lesson.title}</TitleLevel3>
@@ -195,7 +209,7 @@ export default function DashboardPage() {
                                     Mark done
                                 </ButtonPrimary>
                             )}
-                        </div>
+                        </FlexRow>
                     ))}
                 </CardContent>
             </Card>

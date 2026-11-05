@@ -5,7 +5,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import { ButtonFlat, ButtonSecondary } from './ui/button'
 import { useAppStore } from '../store/app-store'
 import ThemeToggle from './theme-toggle'
-import { TextAccent, TextBase, TextSmall } from './ui'
+import { TextAccent, TextBase, TextSmall } from './ui/typography'
 
 const navigation = [
     { to: '/dashboard', label: 'Dashboard', icon: BookOpen, end: true },

@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { fetchExamHistory } from '../api/api'
-import { ButtonPrimary } from '../components/ui/button'
+import { ButtonPrimary,   } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { TextSmall, TitleLevel1, TitleLevel3 } from '../components/ui/typography'
 import type { ExamResult } from '../types'
+import { FlexRow } from '../components/ui/wrapper'
 
 export default function ExamHistoryPage() {
     const [history, setHistory] = useState<ExamResult[]>([])
@@ -36,9 +37,9 @@ export default function ExamHistoryPage() {
 
     return (
         <div data-ui="exam-history.page" className="mx-auto max-w-5xl space-y-6">
-            <div
+            <FlexRow
                 data-ui="exam-history.heading"
-                className="flex flex-wrap items-end justify-between gap-4"
+                className="flex-wrap items-end justify-between gap-4"
             >
                 <div>
                     <p className="text-sm font-semibold uppercase text-sky-700">
@@ -56,7 +57,7 @@ export default function ExamHistoryPage() {
                         <ButtonPrimary>Start a new exam</ButtonPrimary>
                     </Link>
                 </div>
-            </div>
+            </FlexRow>
             {error && (
                 <TextSmall data-ui="exam-history.error" role="alert" className="text-red-700">
                     {error}
@@ -99,20 +100,22 @@ export default function ExamHistoryPage() {
                                 data-testid={`exam-history-result-card-${item.attemptId}`}
                                 className="transition-colors hover:border-sky-500"
                             >
-                                <CardContent className="flex flex-wrap items-center justify-between gap-4 py-5">
-                                    <div>
-                                        <TitleLevel3 className="text-base">
-                                            React foundations assessment
-                                        </TitleLevel3>
-                                        <TextSmall className="mt-1">
-                                            {new Date(item.submittedAt).toLocaleString()} ·{' '}
-                                            {item.correctCount}/{item.totalQuestions} correct ·{' '}
-                                            {item.passed ? 'Passed' : 'Review needed'}
-                                        </TextSmall>
-                                    </div>
-                                    <span className="text-2xl font-bold">
-                                        {item.score}/100 points
-                                    </span>
+                                <CardContent className="py-5">
+                                    <FlexRow className="flex-wrap items-center justify-between gap-4">
+                                        <div>
+                                            <TitleLevel3 className="text-base">
+                                                React foundations assessment
+                                            </TitleLevel3>
+                                            <TextSmall className="mt-1">
+                                                {new Date(item.submittedAt).toLocaleString()} ·{' '}
+                                                {item.correctCount}/{item.totalQuestions} correct ·{' '}
+                                                {item.passed ? 'Passed' : 'Review needed'}
+                                            </TextSmall>
+                                        </div>
+                                        <span className="text-2xl font-bold">
+                                            {item.score}/100 points
+                                        </span>
+                                    </FlexRow>
                                 </CardContent>
                             </Card>
                         </Link>

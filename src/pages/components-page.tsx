@@ -28,7 +28,12 @@ import {
 import { Link } from 'react-router-dom'
 
 import ThemeToggle from '../components/theme-toggle'
-import { ButtonFlat, ButtonOutlined, ButtonPrimary, ButtonSecondary } from '../components/ui/button'
+import {
+    ButtonFlat,
+    ButtonOutlined,
+    ButtonPrimary,
+    ButtonSecondary,
+} from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
@@ -39,6 +44,7 @@ import {
     TitleLevel2,
     TitleLevel3,
 } from '../components/ui/typography'
+import { FlexRow } from '../components/ui/wrapper'
 
 const iconEntries: Array<{ name: string; Icon: LucideIcon }> = [
     { name: 'BookOpen', Icon: BookOpen },
@@ -136,7 +142,7 @@ const buttonCode = `import {
   ButtonSecondary,
   ButtonOutlined,
   ButtonFlat,
-} from '../components/ui/button'
+} from '../components/ui'
 
 <ButtonPrimary>主按钮</ButtonPrimary>
 <ButtonSecondary>次要按钮</ButtonSecondary>
@@ -160,7 +166,7 @@ import { Label } from '../components/ui/label'
   <Input id="demo-disabled" disabled value="不可编辑" readOnly />
 </div>`
 
-const cardCode = `import { ButtonPrimary } from '../components/ui/button'
+const cardCode = `import { ButtonPrimary } from '../components/ui'
 import {
   Card,
   CardContent,
@@ -186,7 +192,7 @@ const typographyCode = `import {
   TitleLevel1,
   TitleLevel2,
   TitleLevel3,
-} from '../components/ui/typography'
+} from '../components/ui'
 
 <TitleLevel1>页面标题</TitleLevel1>
 <TitleLevel2>区块标题</TitleLevel2>
@@ -197,13 +203,17 @@ const typographyCode = `import {
 function CodeDisclosure({ code }: { code: string }) {
     return (
         <details className="group border-t border-slate-200">
-            <summary className="flex cursor-pointer list-none items-center gap-2 px-5 py-3 text-sm font-medium text-slate-600 marker:hidden hover:text-slate-950 [&::-webkit-details-marker]:hidden">
-                <Braces className="h-4 w-4" aria-hidden="true" />
-                <span>查看示例代码</span>
-                <span className="ml-auto text-xs text-slate-400 group-open:hidden">展开</span>
-                <span className="ml-auto hidden text-xs text-slate-400 group-open:inline">
-                    收起
-                </span>
+            <summary className="cursor-pointer list-none px-5 py-3 text-sm font-medium text-slate-600 marker:hidden hover:text-slate-950 [&::-webkit-details-marker]:hidden">
+                <FlexRow className="items-center gap-2">
+                    <Braces className="h-4 w-4" aria-hidden="true" />
+                    <span>查看示例代码</span>
+                    <span className="ml-auto text-xs text-slate-400 group-open:hidden">
+                        展开
+                    </span>
+                    <span className="ml-auto hidden text-xs text-slate-400 group-open:inline">
+                        收起
+                    </span>
+                </FlexRow>
             </summary>
             <pre className="overflow-x-auto border-t border-slate-200 bg-slate-950 p-5 text-xs leading-6 text-slate-100">
                 <code>{code}</code>
@@ -224,7 +234,7 @@ function SectionHeading({
     description: string
 }) {
     return (
-        <div className="mb-5 flex items-start gap-3">
+        <FlexRow className="mb-5 items-start gap-3">
             <span className="mt-1 font-mono text-xs font-semibold text-sky-700">{number}</span>
             <div>
                 <TitleLevel2 id={headingId} className="text-xl">
@@ -232,7 +242,7 @@ function SectionHeading({
                 </TitleLevel2>
                 <TextSmall className="mt-1">{description}</TextSmall>
             </div>
-        </div>
+        </FlexRow>
     )
 }
 
@@ -240,7 +250,7 @@ export default function ComponentsPage() {
     return (
         <main className="min-h-screen bg-slate-50 text-slate-900">
             <header className="border-b border-slate-200 bg-white">
-                <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
+                <FlexRow className="mx-auto max-w-6xl items-center justify-between gap-0 px-5 py-4 sm:px-8">
                     <Link
                         to="/login"
                         className="inline-flex items-center gap-2 text-sm font-medium text-slate-600 transition-colors hover:text-slate-950"
@@ -249,7 +259,7 @@ export default function ComponentsPage() {
                         返回登录
                     </Link>
                     <ThemeToggle />
-                </div>
+                </FlexRow>
             </header>
 
             <div className="mx-auto max-w-6xl px-5 pb-16 pt-12 sm:px-8 sm:pt-16">
@@ -265,7 +275,7 @@ export default function ComponentsPage() {
                         项目公共 UI 组件与主题色一览。展开每个组件底部的示例代码，即可查看对应的 JSX
                         用法。颜色预览会跟随浅色 / 深色主题切换。
                     </TextNormal>
-                    <div className="mt-6 flex flex-wrap gap-2">
+                    <FlexRow className="mt-6 flex-wrap gap-2">
                         {['Button', 'Input', 'Label', 'Card'].map((name) => (
                             <span
                                 key={name}
@@ -274,7 +284,7 @@ export default function ComponentsPage() {
                                 {name}
                             </span>
                         ))}
-                    </div>
+                    </FlexRow>
                 </div>
 
                 <section className="mb-14" aria-labelledby="button-heading">
@@ -285,15 +295,17 @@ export default function ComponentsPage() {
                         description="按钮变体、尺寸、禁用状态与焦点交互。"
                     />
                     <Card>
-                        <CardContent className="flex flex-wrap items-center gap-3 p-5 sm:p-7">
-                            <ButtonPrimary>主按钮</ButtonPrimary>
-                            <ButtonSecondary>次要按钮</ButtonSecondary>
-                            <ButtonOutlined>描边按钮</ButtonOutlined>
-                            <ButtonFlat>幽灵按钮</ButtonFlat>
-                            <span className="mx-1 hidden h-8 border-l border-slate-200 sm:block" />
-                            <ButtonPrimary size="sm">小号</ButtonPrimary>
-                            <ButtonPrimary size="lg">大号</ButtonPrimary>
-                            <ButtonPrimary disabled>禁用</ButtonPrimary>
+                        <CardContent className="p-5 sm:p-7">
+                            <FlexRow className="flex-wrap gap-3">
+                                <ButtonPrimary>主按钮</ButtonPrimary>
+                                <ButtonSecondary>次要按钮</ButtonSecondary>
+                                <ButtonOutlined>描边按钮</ButtonOutlined>
+                                <ButtonFlat>幽灵按钮</ButtonFlat>
+                                <span className="mx-1 hidden h-8 border-l border-slate-200 sm:block" />
+                                <ButtonPrimary size="sm">小号</ButtonPrimary>
+                                <ButtonPrimary size="lg">大号</ButtonPrimary>
+                                <ButtonPrimary disabled>禁用</ButtonPrimary>
+                            </FlexRow>
                         </CardContent>
                         <CodeDisclosure code={buttonCode} />
                     </Card>
@@ -347,7 +359,7 @@ export default function ComponentsPage() {
                             <CardDescription>本周完成情况</CardDescription>
                         </CardHeader>
                         <CardContent>
-                            <div className="flex flex-wrap items-center justify-between gap-4 rounded-md bg-sky-50 p-4">
+                            <FlexRow className="flex-wrap items-center justify-between gap-4 rounded-md bg-sky-50 p-4">
                                 <div>
                                     <p className="text-sm font-medium text-slate-900">
                                         已完成 8 / 10 个学习任务
@@ -357,7 +369,7 @@ export default function ComponentsPage() {
                                     </p>
                                 </div>
                                 <ButtonPrimary>继续学习</ButtonPrimary>
-                            </div>
+                            </FlexRow>
                         </CardContent>
                         <CodeDisclosure code={cardCode} />
                     </Card>
@@ -374,17 +386,17 @@ export default function ComponentsPage() {
                         <CardContent className="p-5 sm:p-7">
                             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                                 {iconEntries.map(({ name, Icon }) => (
-                                    <div
+                                    <FlexRow
                                         key={name}
-                                        className="flex items-center gap-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-3"
+                                        className="items-center gap-3 rounded-md border border-slate-200 bg-slate-50 px-3 py-3"
                                     >
-                                        <div className="flex h-9 w-9 items-center justify-center rounded-md bg-white text-slate-700 shadow-sm">
+                                        <FlexRow className="h-9 w-9 items-center justify-center gap-0 rounded-md bg-white text-slate-700 shadow-sm">
                                             <Icon className="h-4 w-4" aria-hidden="true" />
-                                        </div>
+                                        </FlexRow>
                                         <span className="font-mono text-xs text-slate-700">
                                             {name}
                                         </span>
-                                    </div>
+                                    </FlexRow>
                                 ))}
                             </div>
                         </CardContent>
@@ -407,7 +419,7 @@ export default function ComponentsPage() {
                                 </CardHeader>
                                 <CardContent className="space-y-3 px-5 pb-5 pt-0">
                                     {palette.colors.map(([name, color]) => (
-                                        <div key={name} className="flex items-center gap-3">
+                                        <FlexRow key={name} className="items-center gap-3">
                                             <span
                                                 aria-label={`${name} color swatch`}
                                                 className="h-8 w-10 shrink-0 rounded-md border border-slate-200"
@@ -419,7 +431,7 @@ export default function ComponentsPage() {
                                             <code className="text-[10px] text-slate-400">
                                                 {color}
                                             </code>
-                                        </div>
+                                        </FlexRow>
                                     ))}
                                 </CardContent>
                             </Card>
@@ -446,9 +458,13 @@ export default function ComponentsPage() {
                     </Card>
                 </section>
 
-                <footer className="mt-14 flex items-center gap-2 border-t border-slate-200 pt-5 text-xs text-slate-500">
-                    <Palette className="h-4 w-4" aria-hidden="true" />
-                    <span>颜色由项目 CSS 变量驱动 · 所有示例均使用 src/components/ui 公共组件</span>
+                <footer className="mt-14 border-t border-slate-200 pt-5 text-xs text-slate-500">
+                    <FlexRow className="items-center gap-2">
+                        <Palette className="h-4 w-4" aria-hidden="true" />
+                        <span>
+                            颜色由项目 CSS 变量驱动 · 所有示例均使用 src/components/ui 公共组件
+                        </span>
+                    </FlexRow>
                 </footer>
             </div>
         </main>

@@ -106,41 +106,41 @@
 
 :root[data-theme='dark'] {
     color-scheme: dark;
-    --app-white: #1b2117;
-    --app-slate-50: #11160f;
-    --app-slate-100: #1b2117;
-    --app-slate-200: #2c3627;
-    --app-slate-300: #414d39;
-    --app-slate-400: #78866a;
-    --app-slate-500: #a0ad91;
-    --app-slate-600: #bbc5af;
-    --app-slate-700: #d2dacb;
-    --app-slate-800: #e2e8dc;
-    --app-slate-900: #edf1e9;
-    --app-slate-950: #f7f9f4;
-    --app-accent-50: #19220e;
-    --app-accent-100: #263615;
-    --app-accent-200: #3c5520;
-    --app-accent-300: #587d2a;
-    --app-accent-400: #82ad3a;
-    --app-accent-500: #a8d44d;
-    --app-accent-600: #bfe86a;
-    --app-accent-700: #d0f28f;
-    --app-accent-800: #def6b1;
-    --app-accent-900: #eaf9d0;
-    --app-danger-50: #321b18;
-    --app-danger-100: #48231f;
-    --app-danger-200: #642e28;
-    --app-danger-300: #8c4238;
-    --app-danger-500: #e77a67;
-    --app-danger-700: #f3a094;
-    --app-danger-800: #f7b8ac;
-    --app-danger-900: #fbd4ca;
-    --app-warning-50: #352910;
-    --app-warning-300: #aa812f;
-    --app-warning-500: #e9b847;
-    --app-warning-900: #fff1bd;
-    --app-orange-600: #fbbf24;
+    --app-white: #222b30;
+    --app-slate-50: #11171b;
+    --app-slate-100: #192126;
+    --app-slate-200: #29343a;
+    --app-slate-300: #3b484e;
+    --app-slate-400: #59696f;
+    --app-slate-500: #82939a;
+    --app-slate-600: #94a3a8;
+    --app-slate-700: #b4c0c3;
+    --app-slate-800: #d3dcde;
+    --app-slate-900: #e8eeef;
+    --app-slate-950: #f5f8f8;
+    --app-accent-50: #1b3027;
+    --app-accent-100: #244235;
+    --app-accent-200: #315a46;
+    --app-accent-300: #477a5b;
+    --app-accent-400: #65a174;
+    --app-accent-500: #83bd8b;
+    --app-accent-600: #9bd09e;
+    --app-accent-700: #b2ddb1;
+    --app-accent-800: #cae9c6;
+    --app-accent-900: #e0f2dc;
+    --app-danger-50: #352326;
+    --app-danger-100: #4a2d31;
+    --app-danger-200: #674047;
+    --app-danger-300: #89565e;
+    --app-danger-500: #e08083;
+    --app-danger-700: #f0a3a3;
+    --app-danger-800: #f5bbbb;
+    --app-danger-900: #fad4d2;
+    --app-warning-50: #332d20;
+    --app-warning-300: #9c8050;
+    --app-warning-500: #d6b66f;
+    --app-warning-900: #f5e5bd;
+    --app-orange-600: #efb476;
     color: var(--app-slate-900);
     background: var(--app-slate-50);
 }
@@ -182,10 +182,6 @@ input {
     [data-ui='app.tablet-navigation-drawer'] section::-webkit-scrollbar {
         display: none;
     }
-}
-
-a {
-    text-underline-offset: 4px;
 }
 
 a[target='_blank']::after {

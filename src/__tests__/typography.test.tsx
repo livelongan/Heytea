@@ -7,7 +7,7 @@ import {
     TitleLevel1,
     TitleLevel2,
     TitleLevel3,
-} from '../components/ui/typography'
+} from '../components/ui'
 
 describe('typography components', () => {
     it('renders headings with the intended hierarchy and weights', () => {
