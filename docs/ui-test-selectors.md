@@ -1,99 +1,99 @@
-# UI Selector Guide
+# 界面选择器指南
 
-## Purpose
+## 用途
 
-The app exposes two complementary attributes for locating interface code and testing behavior:
+应用提供两种互补的属性，用于定位界面代码和测试交互行为：
 
-- `data-ui` is a human-facing implementation locator. Use it in browser developer tools to identify a page region, then search the exact value in `src/`.
-- `data-testid` is a stable automation selector for actions and repeated/state-dependent controls. Use it when an accessible role/name is ambiguous or when a test needs an exact control independent of visible copy.
+- `data-ui`：供开发者定位实现的标记。可在浏览器开发者工具中检查页面区域，再到 `src/` 中搜索完全相同的值。
+- `data-testid`：稳定的自动化测试选择器，适用于操作控件、重复记录和状态相关控件。当可访问角色／名称不唯一，或测试需要不受界面文案影响地定位控件时使用。
 
-Neither attribute controls styling or application behavior. Do not select elements by Tailwind classes, generated DOM structure, or array position when a stable selector is available.
+这两种属性都不控制样式或应用行为。若存在稳定选择器，请勿依赖 Tailwind 类名、生成的 DOM 结构或数组位置来选择元素。
 
-## Selector Rules
+## 选择器规则
 
-1. Prefer accessible queries first: role and accessible name, label, or visible text.
-2. Use `data-testid` for action controls, dynamic records, and controls whose label changes with state.
-3. Keep test IDs stable when copy or styling changes. Rename one only when the underlying control's purpose changes.
-4. Name selectors by page, intent, and object, using lowercase kebab case: `exam-primary-action`.
-5. Repeated controls must include a stable identifier, not their current array index when an entity ID exists: `dashboard-lesson-action-lesson-3`.
-6. Responsive duplicates must have distinct IDs, such as `navigation-desktop-dashboard` and `navigation-mobile-dashboard`.
-7. Use `data-ui` names in the `page.region.control` format. Repeated `data-ui` values may include a stable record ID or ordinal, such as `exam.question-number.3`.
-8. Add or update selector assertions when adding, moving, or renaming important actions.
+1. 优先使用可访问查询：角色和可访问名称、标签或可见文本。
+2. 操作控件、动态记录以及标签会随状态变化的控件使用 `data-testid`。
+3. 文案或样式变化时，保持测试 ID 稳定；只有控件用途发生变化时才重命名。
+4. 测试 ID 使用小写 kebab-case，并体现页面、意图和对象，例如 `exam-primary-action`。
+5. 重复控件应包含稳定标识；若实体 ID 可用，不要使用当前数组序号，例如 `dashboard-lesson-action-lesson-3`。
+6. 响应式布局中的同类控件应有不同 ID，例如 `navigation-desktop-dashboard` 和 `navigation-mobile-dashboard`。
+7. `data-ui` 使用 `page.region.control` 格式。重复的 `data-ui` 值可包含稳定记录 ID 或序号，例如 `exam.question-number.3`。
+8. 新增、移动或重命名重要操作时，应添加或更新对应的选择器断言。
 
-## Current Action Selectors
+## 当前操作选择器
 
-### Login and Theme
+### 登录与主题
 
-| Test ID | Element |
+| 测试 ID | 元素 |
 | --- | --- |
-| `login-email` | Email input |
-| `login-password` | Password input |
-| `login-password-visibility` | Show/hide password action |
-| `login-submit` | Sign-in action |
-| `theme-toggle` | Light/dark mode action |
+| `login-email` | 邮箱输入框 |
+| `login-password` | 密码输入框 |
+| `login-password-visibility` | 显示／隐藏密码操作 |
+| `login-submit` | 登录操作 |
+| `theme-toggle` | 白天／夜间模式切换 |
 
-### App Navigation and Dashboard
+### 应用导航与学习首页
 
-| Test ID | Element |
+| 测试 ID | 元素 |
 | --- | --- |
-| `navigation-desktop-dashboard` | Desktop dashboard navigation |
-| `navigation-desktop-exam` | Desktop exam navigation |
-| `navigation-desktop-exam-history` | Desktop history navigation |
-| `navigation-mobile-dashboard` | Mobile dashboard navigation |
-| `navigation-mobile-exam` | Mobile exam navigation |
-| `navigation-mobile-exam-history` | Mobile history navigation |
-| `logout-desktop` | Desktop logout action |
-| `logout-mobile` | Mobile logout action |
-| `dashboard-continue-exam` | Continue current exam |
-| `dashboard-start-exam` | Start a new exam |
-| `dashboard-exam-history` | Open exam history |
-| `dashboard-scenario-<scenarioId>` | Open a scenario |
-| `dashboard-lesson-action-<lessonId>` | Complete a lesson |
+| `navigation-desktop-dashboard` | 桌面端学习首页导航 |
+| `navigation-desktop-exam` | 桌面端考试导航 |
+| `navigation-desktop-exam-history` | 桌面端考试记录导航 |
+| `navigation-mobile-dashboard` | 移动端学习首页导航 |
+| `navigation-mobile-exam` | 移动端考试导航 |
+| `navigation-mobile-exam-history` | 移动端考试记录导航 |
+| `logout-desktop` | 桌面端退出登录操作 |
+| `logout-mobile` | 移动端退出登录操作 |
+| `dashboard-continue-exam` | 继续当前考试 |
+| `dashboard-start-exam` | 开始新考试 |
+| `dashboard-exam-history` | 打开考试记录 |
+| `dashboard-scenario-<scenarioId>` | 打开学习计划 |
+| `dashboard-lesson-action-<lessonId>` | 完成一门课程 |
 
-### Scenario and Exam
+### 学习计划与考试
 
-| Test ID | Element |
+| 测试 ID | 元素 |
 | --- | --- |
-| `scenario-back` | Return to dashboard from a scenario |
-| `scenario-lesson-action-<lessonId>` | Complete a scenario lesson |
-| `exam-begin` | Start the timed attempt |
-| `exam-load-retry` | Retry loading an unavailable exam |
-| `exam-mark-review` | Toggle review flag for the current question |
-| `exam-previous` | Go to the previous question |
-| `exam-primary-action` | Next question, or Submit exam on the final question |
-| `exam-question-<number>` | Navigate to a question |
-| `exam-answer-<questionId>-<optionId>` | Select an objective answer |
-| `exam-response-<questionId>` | Enter a written answer |
-| `exam-submit-cancel` | Cancel submission confirmation |
-| `exam-submit-confirm` | Confirm submission |
+| `scenario-back` | 从学习计划返回学习首页 |
+| `scenario-lesson-action-<lessonId>` | 完成学习计划中的课程 |
+| `exam-begin` | 开始计时答题 |
+| `exam-load-retry` | 重试加载不可用的考试 |
+| `exam-mark-review` | 切换当前题目的复查标记 |
+| `exam-previous` | 返回上一题 |
+| `exam-primary-action` | 前往下一题，或在最后一题交卷 |
+| `exam-question-<number>` | 跳转到指定题目 |
+| `exam-answer-<questionId>-<optionId>` | 选择客观题答案 |
+| `exam-response-<questionId>` | 输入主观题答案 |
+| `exam-submit-cancel` | 取消交卷确认 |
+| `exam-submit-confirm` | 确认交卷 |
 
-### History and Results
+### 考试记录与成绩
 
-| Test ID | Element |
+| 测试 ID | 元素 |
 | --- | --- |
-| `exam-history-new-exam` | Start a new exam from history |
-| `exam-history-empty-start` | Start the first exam from an empty history |
-| `exam-history-result-<attemptId>` | Open a completed result |
-| `exam-result-history` | Return to exam history |
-| `exam-result-dashboard` | Return to dashboard |
-| `exam-result-error-history` | Open history after a result-load error |
-| `exam-result-question-<questionId>` | Review a question result |
-| `not-found-home` | Return to dashboard from the 404 page |
-| `error-boundary-retry` | Retry after a render failure |
-| `error-boundary-dashboard` | Return to dashboard after a render failure |
+| `exam-history-new-exam` | 从考试记录开始新考试 |
+| `exam-history-empty-start` | 在没有考试记录时开始第一次考试 |
+| `exam-history-result-<attemptId>` | 打开已完成的考试成绩 |
+| `exam-result-history` | 返回考试记录 |
+| `exam-result-dashboard` | 返回学习首页 |
+| `exam-result-error-history` | 成绩加载失败后打开考试记录 |
+| `exam-result-question-<questionId>` | 查看单题成绩 |
+| `not-found-home` | 从 404 页面返回学习首页 |
+| `error-boundary-retry` | 渲染失败后重试 |
+| `error-boundary-dashboard` | 渲染失败后返回学习首页 |
 
-Generic UI primitives also expose `data-ui` values such as `ui.button`, `ui.card`, `ui.input`, and `ui.label`. Pages can override these with a more specific business marker. See the `data-ui` attributes in the source when you need to locate non-action regions such as headings, summaries, or status messages.
+通用 UI 组件也提供 `ui.button`、`ui.card`、`ui.input` 和 `ui.label` 等 `data-ui` 值。页面可用更具体的业务标记覆盖它们。定位标题、摘要或状态消息等非操作区域时，请检查源码中的 `data-ui` 属性。
 
-## Examples
+## 示例
 
-Testing Library:
+Testing Library：
 
 ```tsx
 await user.click(screen.getByTestId('exam-primary-action'))
 expect(screen.getByTestId('exam-question-2')).toBeDisabled()
 ```
 
-Playwright:
+Playwright：
 
 ```ts
 await page.getByTestId('login-password-visibility').click()
@@ -101,8 +101,8 @@ await page.getByTestId('exam-answer-react-001-a').check()
 await page.getByTestId('exam-primary-action').click()
 ```
 
-Prefer role/name assertions for user-visible outcomes, for example:
+验证用户可见结果时，优先使用角色和名称断言，例如：
 
 ```ts
-await expect(page.getByRole('heading', { name: /assessment results/i })).toBeVisible()
+await expect(page.getByRole('heading', { name: /考试成绩/ })).toBeVisible()
 ```
