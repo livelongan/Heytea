@@ -1,4 +1,4 @@
-# Learning Lab
+# Learning React
 
 React, TypeScript, Vite, Tailwind CSS v4, Zustand, React Router, MSW, Vitest, Testing Library, and Playwright application.
 
@@ -7,11 +7,16 @@ React, TypeScript, Vite, Tailwind CSS v4, Zustand, React Router, MSW, Vitest, Te
 ```bash
 npm install
 npm run dev
+npm run lint
+npm run format
+npm run format:check
 npm run test
 npm run test:coverage
 npm run test:e2e
 npm run build
 ```
+
+VS Code formats supported files with Prettier on save and applies available ESLint fixes. Install the recommended Prettier and ESLint extensions when prompted.
 
 Copy `.env.example` to `.env.local` to configure the API base URL. The default `/api` endpoints are handled by MSW in development.
 

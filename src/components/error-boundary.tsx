@@ -1,7 +1,7 @@
 import { Component, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
 
-import { Button } from './ui/button'
+import { ButtonPrimary, ButtonSecondary } from './ui/button'
 
 type Props = { children: ReactNode }
 type State = { hasError: boolean }
@@ -30,19 +30,19 @@ export default class ErrorBoundary extends Component<Props, State> {
                             dashboard.
                         </p>
                         <div className="flex justify-center gap-3">
-                            <Button
+                            <ButtonPrimary
                                 data-ui="error-boundary.retry"
                                 data-testid="error-boundary-retry"
                                 onClick={() => this.setState({ hasError: false })}
                             >
                                 Try again
-                            </Button>
+                            </ButtonPrimary>
                             <Link
                                 data-ui="error-boundary.dashboard-link"
                                 data-testid="error-boundary-dashboard"
                                 to="/dashboard"
                             >
-                                <Button variant="secondary">Dashboard</Button>
+                                <ButtonSecondary>Dashboard</ButtonSecondary>
                             </Link>
                         </div>
                     </section>

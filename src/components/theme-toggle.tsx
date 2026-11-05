@@ -1,6 +1,6 @@
 import { Moon, Sun } from 'lucide-react'
 
-import { Button } from './ui/button'
+import { ButtonFlat } from './ui/button'
 import { useTheme } from './theme-context'
 
 export default function ThemeToggle() {
@@ -8,11 +8,10 @@ export default function ThemeToggle() {
     const nextTheme = theme === 'light' ? 'dark' : 'light'
 
     return (
-        <Button
+        <ButtonFlat
             data-ui="theme.toggle"
             data-testid="theme-toggle"
             type="button"
-            variant="secondary"
             size="sm"
             className="h-9 w-9 p-0"
             onClick={toggleTheme}
@@ -24,6 +23,6 @@ export default function ThemeToggle() {
             ) : (
                 <Sun className="h-4 w-4" aria-hidden="true" />
             )}
-        </Button>
+        </ButtonFlat>
     )
 }

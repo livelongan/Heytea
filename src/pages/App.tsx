@@ -3,6 +3,7 @@ import { Navigate, Outlet, Route, Routes, useLocation } from 'react-router-dom'
 import AppLayout from '../components/app-layout'
 import { useAppStore } from '../store/app-store'
 import DashboardPage from './dashboard-page'
+import ComponentsPage from './components-page'
 import ExamEntryPage from './exam-entry-page'
 import ExamHistoryPage from './exam-history-page'
 import ExamPage from './exam-page'
@@ -37,6 +38,7 @@ export default function App() {
                 path="/login"
                 element={user ? <Navigate to="/dashboard" replace /> : <LoginPage />}
             />
+            <Route path="/components" element={<ComponentsPage />} />
             <Route element={<RequireAuth />}>
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/scenarios/:scenarioId" element={<ScenarioPage />} />

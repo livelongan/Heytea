@@ -92,11 +92,7 @@ export const handlers = [
         return HttpResponse.json({
             examId: mockExamId,
             questions: mockExamQuestions.map(
-                ({
-                    correctAnswer: _answer,
-                    explanation: _explanation,
-                    ...question
-                }) => question,
+                ({ correctAnswer: _answer, explanation: _explanation, ...question }) => question,
             ),
         })
     }),

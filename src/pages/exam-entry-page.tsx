@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { fetchExamHistory } from '../api/api'
+import { TextNormal } from '../components/ui/typography'
 import { readExamDraft } from '../utils/exam-session'
 
 export default function ExamEntryPage() {
@@ -38,13 +39,13 @@ export default function ExamEntryPage() {
 
     if (error)
         return (
-            <p data-ui="exam.entry-error" role="alert">
+                <TextNormal data-ui="exam.entry-error" role="alert">
                 {error}
-            </p>
+                </TextNormal>
         )
     return (
-        <p data-ui="exam.entry-loading" role="status">
+            <TextNormal data-ui="exam.entry-loading" role="status">
             Opening your exam…
-        </p>
+            </TextNormal>
     )
 }

@@ -2,8 +2,9 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import { fetchExamHistory } from '../api/api'
-import { Button } from '../components/ui/button'
+import { ButtonPrimary } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { TextSmall, TitleLevel1, TitleLevel3 } from '../components/ui/typography'
 import type { ExamResult } from '../types'
 
 export default function ExamHistoryPage() {
@@ -43,7 +44,7 @@ export default function ExamHistoryPage() {
                     <p className="text-sm font-semibold uppercase text-sky-700">
                         React foundations
                     </p>
-                    <h1 className="mt-1 text-3xl font-semibold">My exams</h1>
+                    <TitleLevel1 className="mt-1">My exams</TitleLevel1>
                 </div>
                 <div style={{ textAlign: 'center' }}>
                     <Link
@@ -52,19 +53,19 @@ export default function ExamHistoryPage() {
                         to="/exam/new"
                         style={{ width: 'fit-content', minWidth: '260px' }}
                     >
-                        <Button>Start a new exam</Button>
+                        <ButtonPrimary>Start a new exam</ButtonPrimary>
                     </Link>
                 </div>
             </div>
             {error && (
-                <p data-ui="exam-history.error" role="alert" className="text-red-700">
+                <TextSmall data-ui="exam-history.error" role="alert" className="text-red-700">
                     {error}
-                </p>
+                </TextSmall>
             )}
             {isLoading ? (
-                <p data-ui="exam-history.loading" role="status">
+                <TextSmall data-ui="exam-history.loading" role="status">
                     Loading exam history…
-                </p>
+                </TextSmall>
             ) : history.length === 0 ? (
                 <Card data-ui="exam-history.empty-state">
                     <CardHeader>
@@ -79,7 +80,7 @@ export default function ExamHistoryPage() {
                             data-testid="exam-history-empty-start"
                             to="/exam/new"
                         >
-                            <Button>Start your first exam</Button>
+                            <ButtonPrimary>Start your first exam</ButtonPrimary>
                         </Link>
                     </CardContent>
                 </Card>
@@ -100,14 +101,14 @@ export default function ExamHistoryPage() {
                             >
                                 <CardContent className="flex flex-wrap items-center justify-between gap-4 py-5">
                                     <div>
-                                        <p className="font-semibold">
+                                        <TitleLevel3 className="text-base">
                                             React foundations assessment
-                                        </p>
-                                        <p className="mt-1 text-sm text-slate-500">
+                                        </TitleLevel3>
+                                        <TextSmall className="mt-1">
                                             {new Date(item.submittedAt).toLocaleString()} ·{' '}
                                             {item.correctCount}/{item.totalQuestions} correct ·{' '}
                                             {item.passed ? 'Passed' : 'Review needed'}
-                                        </p>
+                                        </TextSmall>
                                     </div>
                                     <span className="text-2xl font-bold">
                                         {item.score}/100 points

@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { fetchExamQuestions, submitExamAttempt } from '../api/api'
-import { Button } from '../components/ui/button'
+import { ButtonFlat, ButtonPrimary, ButtonSecondary } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { TextNormal, TextSmall, TitleLevel1, TitleLevel2 } from '../components/ui/typography'
 import type { ExamAnswer, ExamDraft, ExamQuestion } from '../types'
 import {
     EXAM_DRAFT_KEY,
@@ -12,6 +13,7 @@ import {
     readExamDraft,
     saveExamDraft,
 } from '../utils/exam-session'
+import { TextAccent, TextBase, TextError, TextSlate } from '../components/ui'
 
 function formatTime(milliseconds: number) {
     const totalSeconds = Math.max(0, Math.ceil(milliseconds / 1000))
@@ -161,19 +163,23 @@ export default function ExamPage() {
         updateDraft({ markedQuestionIds: [...marked] })
     }
 
-    if (isLoading) return <p role="status">Loading React assessment…</p>
+    if (isLoading) return <TextNormal role="status">Loading React assessment…</TextNormal>
     if (error && !draft) {
         return (
             <section className="mx-auto max-w-xl space-y-4" role="alert">
-                <h1 className="text-2xl font-semibold">Exam unavailable</h1>
-                <p>{error}</p>
-                <Button data-testid="exam-load-retry" onClick={() => window.location.reload()}>
+                <TitleLevel1 className="text-2xl">Exam unavailable</TitleLevel1>
+                <TextNormal>{error}</TextNormal>
+                <ButtonPrimary
+                    data-testid="exam-load-retry"
+                    onClick={() => window.location.reload()}
+                >
                     Retry
-                </Button>
+                </ButtonPrimary>
             </section>
         )
     }
-    if (!draft || !currentQuestion) return <p role="status">Preparing your exam…</p>
+    if (!draft || !currentQuestion)
+        return <TextNormal role="status">Preparing your exam…</TextNormal>
 
     const answer = draft.answers[currentQuestion.id]
     const selectedIds = Array.isArray(answer) ? answer : answer ? [answer] : []
@@ -197,7 +203,7 @@ export default function ExamPage() {
                     <p className="text-xs font-semibold uppercase tracking-wide text-slate-500">
                         React foundations · Online exam
                     </p>
-                    <h1 className="mt-1 text-xl font-semibold">Online assessment</h1>
+                    <TitleLevel1 className="mt-1 text-xl">Online assessment</TitleLevel1>
                 </div>
             </div>
 
@@ -241,35 +247,38 @@ export default function ExamPage() {
                                     </p>
                                 </div>
                             </div>
-                            <p className="text-xs text-slate-500">Exam in progress</p>
+                            <TextSmall className="text-xs">Exam in progress</TextSmall>
                         </CardHeader>
                     </Card>
                 </div>
 
                 <Card data-ui="exam.question-card">
-                    <CardHeader className="space-y-0 p-6 pb-3">
+                    <CardHeader className="space-y-0">
                         <div
                             data-ui="exam.question-number"
-                            className="mb-2 flex items-center justify-between"
+                            className="mb-3 flex items-center justify-between"
                         >
-                            <p className="font-semibold">Total score: 100 points</p>
+                            <TextSmall>Total score: 100 points</TextSmall>
                             <p
-                                className="shrink-0 text-right text-sm text-slate-500"
+                                className="shrink-0 text-right text-slate-400 text-sm"
                                 aria-label={`Question ${draft.currentIndex + 1} of ${questions.length}`}
                             >
-                                Question {draft.currentIndex + 1} / {questions.length}
+                                <span className="text-slate-700 text-lg">
+                                    {draft.currentIndex + 1}
+                                </span>{' '}
+                                / {questions.length}
                             </p>
                         </div>
                         <CardTitle data-ui="exam.question-prompt" className="text-lg leading-7">
                             {currentQuestion.stem}
                         </CardTitle>
                         {currentQuestion.description && (
-                            <p
+                            <TextSmall
                                 data-ui="exam.question-description"
                                 className="mt-2 max-w-3xl text-sm leading-6 text-slate-600"
                             >
                                 {currentQuestion.description}
-                            </p>
+                            </TextSmall>
                         )}
                         <div className="mt-3 flex items-center justify-between gap-3">
                             <span
@@ -284,17 +293,16 @@ export default function ExamPage() {
                                         ? 'True or false'
                                         : 'Written response'}
                             </span>
-                            <Button
+                            <ButtonFlat
                                 data-ui="exam.question.mark-review"
                                 data-testid="exam-mark-review"
-                                variant="ghost"
                                 size="sm"
                                 className="h-auto px-2 py-1 text-sm font-normal"
                                 onClick={() => toggleMarked(currentQuestion.id)}
                                 aria-pressed={isMarked}
                             >
                                 {isMarked ? 'Marked for review' : 'Mark for review'}
-                            </Button>
+                            </ButtonFlat>
                         </div>
                     </CardHeader>
                     <CardContent className="space-y-3">
@@ -309,7 +317,9 @@ export default function ExamPage() {
                                         data-ui={`exam.answer-input.${currentQuestion.id}.${option.id}`}
                                         data-testid={`exam-answer-${currentQuestion.id}-${option.id}`}
                                         type={
-                                            currentQuestion.type === 'multiple' ? 'checkbox' : 'radio'
+                                            currentQuestion.type === 'multiple'
+                                                ? 'checkbox'
+                                                : 'radio'
                                         }
                                         name={`answer-${currentQuestion.id}`}
                                         value={option.id}
@@ -330,34 +340,33 @@ export default function ExamPage() {
                 </Card>
 
                 <div className="flex flex-wrap items-center justify-between gap-3 px-0 md:px-5">
-                    <p
+                    <TextSlate
                         data-ui="exam.question-points"
                         data-testid="exam-question-points"
                         className="font-semibold"
                     >
                         Score: {currentQuestion.points} points
-                    </p>
+                    </TextSlate>
                     <div className="flex flex-wrap justify-end gap-3">
-                        <Button
+                        <ButtonSecondary
                             data-ui="exam.navigation.previous"
                             data-testid="exam-previous"
-                            variant="secondary"
                             disabled={draft.currentIndex === 0}
                             onClick={() => updateDraft({ currentIndex: draft.currentIndex - 1 })}
                         >
-                            Previous question
-                        </Button>
+                            Previous
+                        </ButtonSecondary>
                         {draft.currentIndex === questions.length - 1 ? (
-                            <Button
+                            <ButtonPrimary
                                 data-ui="exam.primary-action"
                                 data-testid="exam-primary-action"
                                 disabled={isSubmitting}
                                 onClick={() => setShowConfirmation(true)}
                             >
                                 {isSubmitting ? 'Submitting…' : 'Submit exam'}
-                            </Button>
+                            </ButtonPrimary>
                         ) : (
-                            <Button
+                            <ButtonPrimary
                                 data-ui="exam.primary-action"
                                 data-testid="exam-primary-action"
                                 disabled={!hasAnsweredCurrentQuestion}
@@ -365,15 +374,15 @@ export default function ExamPage() {
                                     updateDraft({ currentIndex: draft.currentIndex + 1 })
                                 }
                             >
-                                Next question
-                            </Button>
+                                Next
+                            </ButtonPrimary>
                         )}
                     </div>
                 </div>
                 {!hasAnsweredCurrentQuestion && draft.currentIndex < questions.length - 1 && (
-                    <p role="status" className="text-right text-sm text-slate-600">
+                    <TextError role="status" className="text-right">
                         Answer this question to continue.
-                    </p>
+                    </TextError>
                 )}
             </section>
 
@@ -435,42 +444,22 @@ export default function ExamPage() {
                                 )
                             })}
                         </div>
-                        <div className="mt-4 flex flex-wrap gap-3 text-xs text-slate-600">
-                            <span className="flex items-center gap-1">
+                        <TextSmall className="mt-4 flex flex-wrap gap-3">
+                            <TextBase className="flex items-center gap-1">
                                 <i className="h-2.5 w-2.5 rounded-full bg-slate-300" />
                                 Unanswered
-                            </span>
-                            <span className="flex items-center gap-1">
+                            </TextBase>
+                            <TextBase className="flex items-center gap-1">
                                 <i className="h-2.5 w-2.5 rounded-full bg-emerald-500" />
                                 Answered
-                            </span>
-                            <span className="flex items-center gap-1">
+                            </TextBase>
+                            <TextBase className="flex items-center gap-1">
                                 <i className="h-2.5 w-2.5 rounded-full bg-amber-500" />
                                 Marked
-                            </span>
-                        </div>
+                            </TextBase>
+                        </TextSmall>
                     </CardContent>
-                </Card>
-
-                {/* <Card data-ui="exam.information">
-                    <CardHeader className="pb-3">
-                        <CardTitle>Exam information</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-2 text-sm">
-                        <div className="flex justify-between gap-3">
-                            <span className="text-slate-500">Duration</span>
-                            <span>{Math.round(EXAM_DURATION_MS / 60_000)} minutes</span>
-                        </div>
-                        <div className="flex justify-between gap-3">
-                            <span className="text-slate-500">Total score</span>
-                            <span>{totalPoints} points</span>
-                        </div>
-                        <div className="flex justify-between gap-3">
-                            <span className="text-slate-500">Questions</span>
-                            <span>{questions.length}</span>
-                        </div>
-                    </CardContent>
-                </Card> */}
+                </Card> 
             </aside>
 
             {showConfirmation && (
@@ -485,23 +474,22 @@ export default function ExamPage() {
                         aria-labelledby="submit-title"
                         className="w-full max-w-md space-y-4 rounded-md bg-white p-6 shadow-xl"
                     >
-                        <h2 id="submit-title" className="text-xl font-semibold">
+                        <TitleLevel2 id="submit-title" className="text-xl">
                             Submit this exam?
-                        </h2>
-                        <p className="text-sm text-slate-600">
+                        </TitleLevel2>
+                        <TextSmall className="text-slate-600">
                             You have answered {answeredCount} of {questions.length} questions. You
                             cannot return to the answer page after submitting.
-                        </p>
+                        </TextSmall>
                         <div className="flex justify-end gap-3">
-                            <Button
+                            <ButtonSecondary
                                 data-ui="exam.submit-dialog.cancel"
                                 data-testid="exam-submit-cancel"
-                                variant="secondary"
                                 onClick={() => setShowConfirmation(false)}
                             >
                                 Keep answering
-                            </Button>
-                            <Button
+                            </ButtonSecondary>
+                            <ButtonPrimary
                                 data-ui="exam.submit-dialog.confirm"
                                 data-testid="exam-submit-confirm"
                                 disabled={isSubmitting}
@@ -510,8 +498,8 @@ export default function ExamPage() {
                                     void submitAttempt(false)
                                 }}
                             >
-                                Confirm submission
-                            </Button>
+                                Confirm
+                            </ButtonPrimary>
                         </div>
                     </section>
                 </div>

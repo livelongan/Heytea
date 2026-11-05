@@ -3,8 +3,9 @@ import { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 
 import { fetchExamResult } from '../api/api'
-import { Button } from '../components/ui/button'
+import { ButtonPrimary } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { TextNormal, TextSmall, TitleLevel1 } from '../components/ui/typography'
 import type { ExamAnswer, ExamResult } from '../types'
 
 function answerLabel(
@@ -50,18 +51,18 @@ export default function ExamResultPage() {
     if (error)
         return (
             <section data-ui="exam-result.error" role="alert" className="space-y-4">
-                <h1 className="text-2xl font-semibold">Result unavailable</h1>
-                <p>{error}</p>
+                <TitleLevel1 className="text-2xl">Result unavailable</TitleLevel1>
+                <TextNormal>{error}</TextNormal>
                 <Link data-testid="exam-result-error-history" to="/exam/history">
-                    <Button>View exam history</Button>
+                    <ButtonPrimary>View exam history</ButtonPrimary>
                 </Link>
             </section>
         )
     if (!result)
         return (
-            <p data-ui="exam-result.loading" role="status">
+            <TextNormal data-ui="exam-result.loading" role="status">
                 Loading exam result…
-            </p>
+            </TextNormal>
         )
 
     const answeredCount = result.questions.filter((item) => item.answer !== null).length
@@ -76,11 +77,14 @@ export default function ExamResultPage() {
                 <span className="mb-8 grid h-20 w-20 place-items-center rounded-full bg-emerald-100 text-emerald-700">
                     <CircleCheck className="h-10 w-10" aria-hidden="true" />
                 </span>
-                <h1 data-ui="exam-result.heading" className="text-3xl font-bold tracking-tight">
+                <TitleLevel1
+                    data-ui="exam-result.heading"
+                    className="text-3xl font-bold tracking-tight"
+                >
                     {result.submittedAutomatically
                         ? "Time's up, your exam is complete"
                         : 'Your exam is complete'}
-                </h1>
+                </TitleLevel1>
                 {/* <p className="mt-4 max-w-lg text-base leading-7 text-slate-500">
                     {result.submittedAutomatically
                         ? 'Your exam was submitted automatically, and your answers have been saved.'
@@ -95,7 +99,7 @@ export default function ExamResultPage() {
                     </span>
                     <span className="text-lg">points</span>
                 </div>
-                <p data-ui="exam-result.answer-counts" className="mt-8 text-slate-500">
+                <TextSmall data-ui="exam-result.answer-counts" className="mt-8">
                     Answered {answeredCount} <span className="px-1">·</span> Correct{' '}
                     {result.correctCount}
                     <span className="text-slate-500 mx-5">
@@ -109,14 +113,16 @@ export default function ExamResultPage() {
                     >
                         Exam history
                     </Link>
-                </p>
+                </TextSmall>
                 <Link
                     data-ui="exam-result.restart"
                     data-testid="exam-result-restart"
                     to="/exam/new"
                     className="mt-6"
                 >
-                    <Button className="min-w-32 bg-sky-800 hover:bg-sky-700">Restart</Button>
+                    <ButtonPrimary className="min-w-32 bg-sky-800 hover:bg-sky-700">
+                        Restart
+                    </ButtonPrimary>
                 </Link>
                 {/* <div className="mt-4 flex items-center gap-4 text-sm">
                     <Link
@@ -175,9 +181,9 @@ export default function ExamResultPage() {
                                             {item.question.stem}
                                         </CardTitle>
                                         {item.question.description && (
-                                            <p className="mt-2 text-sm leading-6 text-slate-600">
+                                            <TextSmall className="mt-2 text-sm leading-6 text-slate-600">
                                                 {item.question.description}
-                                            </p>
+                                            </TextSmall>
                                         )}
                                     </div>
                                     <span
@@ -194,18 +200,18 @@ export default function ExamResultPage() {
                                 </div>
                             </CardHeader>
                             <CardContent className="space-y-2 text-sm">
-                                <p>
+                                <TextNormal className="text-sm">
                                     <span className="font-semibold">Your answer:</span>{' '}
                                     {answerLabel(item.answer, item.question.options)}
-                                </p>
-                                <p>
+                                </TextNormal>
+                                <TextNormal className="text-sm">
                                     <span className="font-semibold">Correct answer:</span>{' '}
                                     {answerLabel(item.correctAnswer, item.question.options)}
-                                </p>
-                                <p className="border-t border-slate-200 pt-3 text-slate-700">
+                                </TextNormal>
+                                <TextNormal className="border-t border-slate-200 pt-3 text-sm text-slate-700">
                                     <span className="font-semibold">Explanation:</span>{' '}
                                     {item.explanation}
-                                </p>
+                                </TextNormal>
                             </CardContent>
                         </Card>
                     ))}

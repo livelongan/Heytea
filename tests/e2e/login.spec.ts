@@ -58,9 +58,9 @@ test('user can restore an exam draft, submit, and review the result', async ({ p
     await page.getByRole('button', { name: /next question/i }).click()
     for (let questionNumber = 13; questionNumber <= 20; questionNumber += 1) {
         const optionId = questionNumber === 15 || questionNumber === 19 ? 'true' : 'a'
-        await page.getByTestId(
-            `exam-answer-react-${String(questionNumber).padStart(3, '0')}-${optionId}`,
-        ).check()
+        await page
+            .getByTestId(`exam-answer-react-${String(questionNumber).padStart(3, '0')}-${optionId}`)
+            .check()
         if (questionNumber < 20) await page.getByRole('button', { name: /next question/i }).click()
     }
 

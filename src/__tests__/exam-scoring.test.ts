@@ -27,9 +27,9 @@ describe('exam scoring', () => {
         expect(result.score).toBe(7)
         expect(result.correctCount).toBe(2)
         expect(result.totalQuestions).toBe(20)
-        expect(result.questions.reduce((total, question) => total + question.question.points, 0)).toBe(
-            MAX_EXAM_SCORE,
-        )
+        expect(
+            result.questions.reduce((total, question) => total + question.question.points, 0),
+        ).toBe(MAX_EXAM_SCORE)
         expect(result.passed).toBe(false)
         expect(result.durationSeconds).toBe(60)
         expect(result.questions[1].explanation).toContain('Props flow')

@@ -1,6 +1,7 @@
 import * as React from 'react'
 
 import { cn } from '../../utils/utils'
+import { TextSmall, TitleLevel3 } from './typography'
 
 const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
@@ -22,7 +23,7 @@ const CardHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDiv
         <div
             ref={ref}
             data-ui="ui.card-header"
-            className={cn('flex flex-col space-y-1.5 p-6', className)}
+            className={cn('flex flex-col space-y-1.5 px-5 py-6', className)}
             {...props}
         />
     ),
@@ -31,10 +32,10 @@ CardHeader.displayName = 'CardHeader'
 
 const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
     ({ className, ...props }, ref) => (
-        <div
+        <TitleLevel3
             ref={ref}
             data-ui="ui.card-title"
-            className={cn('text-xl font-semibold leading-none tracking-tight', className)}
+            className={cn('leading-none tracking-tight', className)}
             {...props}
         />
     ),
@@ -42,11 +43,10 @@ const CardTitle = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivE
 CardTitle.displayName = 'CardTitle'
 
 const CardDescription = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
-    ({ className, ...props }, ref) => (
-        <div
+    ({ ...props }, ref) => (
+        <TextSmall
             ref={ref}
             data-ui="ui.card-description"
-            className={cn('text-sm text-slate-500', className)}
             {...props}
         />
     ),
@@ -58,7 +58,7 @@ const CardContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
         <div
             ref={ref}
             data-ui="ui.card-content"
-            className={cn('p-4 pt-0 md:p-6', className)}
+            className={cn('p-5 pt-0 md:py-6', className)}
             {...props}
         />
     ),

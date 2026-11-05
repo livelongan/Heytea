@@ -1,11 +1,12 @@
 import { type FormEvent, useState } from 'react'
-import { Eye, EyeOff, ShieldCheck, UserRound } from 'lucide-react'
+import { Eye, EyeOff, GraduationCap, UserRound } from 'lucide-react'
 import { useLocation, useNavigate } from 'react-router-dom'
 
-import { Button } from '../components/ui/button'
+import { ButtonPrimary } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
 import { Input } from '../components/ui/input'
 import { Label } from '../components/ui/label'
+import { TextSmall } from '../components/ui/typography'
 import { useAppStore } from '../store/app-store'
 import ThemeToggle from '../components/theme-toggle'
 
@@ -81,7 +82,7 @@ export default function LoginPage() {
             <Card data-ui="login.card" className="w-full max-w-md border-slate-200 shadow-lg">
                 <CardHeader className="space-y-2">
                     <div className="mb-2 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-sky-100 text-sky-700">
-                        <ShieldCheck className="h-6 w-6" aria-hidden="true" />
+                        <GraduationCap className="h-6 w-6" aria-hidden="true" />
                     </div>
                     <CardTitle className="text-2xl">Academy portal</CardTitle>
                     <CardDescription>
@@ -118,13 +119,13 @@ export default function LoginPage() {
                                 />
                             </div>
                             {errors.email && (
-                                <p
+                                <TextSmall
                                     data-ui="login.email-error"
                                     id="email-error"
                                     className="text-sm text-red-700"
                                 >
                                     {errors.email}
-                                </p>
+                                </TextSmall>
                             )}
                         </div>
                         <div className="space-y-2">
@@ -162,25 +163,25 @@ export default function LoginPage() {
                                 </button>
                             </div>
                             {errors.password && (
-                                <p
+                                <TextSmall
                                     data-ui="login.password-error"
                                     id="password-error"
                                     className="text-sm text-red-700"
                                 >
                                     {errors.password}
-                                </p>
+                                </TextSmall>
                             )}
                         </div>
                         {requestError && (
-                            <p
+                            <TextSmall
                                 data-ui="login.request-error"
                                 role="alert"
                                 className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700"
                             >
                                 {requestError}
-                            </p>
+                            </TextSmall>
                         )}
-                        <Button
+                        <ButtonPrimary
                             data-ui="login.submit"
                             data-testid="login-submit"
                             className="w-full"
@@ -188,7 +189,7 @@ export default function LoginPage() {
                             disabled={isSubmitting}
                         >
                             {isSubmitting ? 'Signing in...' : 'Sign in'}
-                        </Button>
+                        </ButtonPrimary>
                     </form>
                 </CardContent>
             </Card>

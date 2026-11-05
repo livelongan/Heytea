@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 
-import { Button } from '../components/ui/button'
+import { ButtonPrimary } from '../components/ui/button'
+import { TextNormal, TitleLevel1 } from '../components/ui/typography'
 
 export default function NotFoundPage() {
     return (
@@ -9,10 +10,12 @@ export default function NotFoundPage() {
             className="mx-auto flex min-h-[60vh] max-w-xl flex-col items-center justify-center gap-4 text-center"
         >
             <p className="text-sm font-semibold uppercase text-sky-700">404 · Page not found</p>
-            <h1 className="text-3xl font-semibold">This page does not exist</h1>
-            <p className="text-slate-600">The address may be outdated or incorrect.</p>
+            <TitleLevel1>This page does not exist</TitleLevel1>
+            <TextNormal className="text-slate-600">
+                The address may be outdated or incorrect.
+            </TextNormal>
             <Link data-ui="not-found.home-link" data-testid="not-found-home" to="/dashboard">
-                <Button>Return to dashboard</Button>
+                <ButtonPrimary>Return to dashboard</ButtonPrimary>
             </Link>
         </section>
     )

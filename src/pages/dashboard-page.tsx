@@ -1,8 +1,9 @@
 import { BookOpen, CheckCircle2, GraduationCap } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
-import { Button } from '../components/ui/button'
+import { ButtonPrimary, ButtonSecondary } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { TextNormal, TextSmall, TitleLevel1, TitleLevel3 } from '../components/ui/typography'
 import { useAppStore } from '../store/app-store'
 
 export default function DashboardPage() {
@@ -14,7 +15,8 @@ export default function DashboardPage() {
     const currentScenario =
         scenarios.find((scenario) => scenario.id === currentScenarioId) ?? scenarios[0]
 
-    if (!currentScenario) return <p role="status">No learning scenarios are available.</p>
+    if (!currentScenario)
+        return <TextNormal role="status">No learning scenarios are available.</TextNormal>
 
     const completedLessons = currentScenario.lessons.filter((lesson) => lesson.completed).length
     const overallProgress = Math.round(
@@ -29,12 +31,15 @@ export default function DashboardPage() {
             >
                 <div>
                     <p className="text-sm font-semibold uppercase text-sky-700">Learning hub</p>
-                    <h1 className="mt-1 text-3xl font-semibold">Learning Dashboard</h1>
+                    <TitleLevel1 className="mt-1">Learning Dashboard</TitleLevel1>
                 </div>
                 <Link to="/exam">
-                    <Button data-ui="dashboard.continue-exam" data-testid="dashboard-continue-exam">
+                    <ButtonPrimary
+                        data-ui="dashboard.continue-exam"
+                        data-testid="dashboard-continue-exam"
+                    >
                         Continue React exam
-                    </Button>
+                    </ButtonPrimary>
                 </Link>
             </div>
 
@@ -110,27 +115,34 @@ export default function DashboardPage() {
                 <Card data-ui="dashboard.exam-card">
                     <CardHeader>
                         <CardTitle>React foundations assessment</CardTitle>
-                        <CardDescription>
-                            20 questions · 100 points · 60 minutes · single choice, multiple choice, and true/false
-                        </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                        <p className="text-sm leading-6 text-slate-600">
-                            Practice Hooks, props, state updates, list keys, and controlled inputs.
-                            Your active attempt is saved as a draft.
-                        </p>
+                        <TextNormal>20 questions · 100 points · 60 minutes</TextNormal>
+                        <CardDescription>
+                            React 是一个库。它允许你将组件放在一起，但不关注路由和数据获取。要使用
+                            React 构建整个应用程序，我们建议使用像
+                            <Link to="https://nextjs.org" target="_blank" rel="noopener">
+                                Next.js
+                            </Link>{' '}
+                            或
+                            <Link to="https://reactrouter.com" target="_blank" rel="noopener">
+                                React Router
+                            </Link>
+                            这样的全栈 React 框架。{' '}
+                        </CardDescription>
+
                         <div style={{ textAlign: 'center', marginTop: '2rem' }}>
                             <Link
                                 data-ui="dashboard.start-exam-link"
                                 data-testid="dashboard-start-exam"
                                 to="/exam/new"
                             >
-                                <Button
+                                <ButtonPrimary
                                     className="w-full"
                                     style={{ width: 'fit-content', minWidth: '260px' }}
                                 >
                                     Start a new exam
-                                </Button>
+                                </ButtonPrimary>
                             </Link>
                         </div>
                         <Link
@@ -161,18 +173,28 @@ export default function DashboardPage() {
                             className="flex items-center justify-between gap-4 rounded-md border border-slate-200 bg-white px-4 py-3"
                         >
                             <div>
-                                <p className="font-medium">{lesson.title}</p>
-                                <p className="text-sm text-slate-500">{lesson.duration} minutes</p>
+                                <TitleLevel3 className="text-base">{lesson.title}</TitleLevel3>
+                                <TextSmall>{lesson.duration} minutes</TextSmall>
                             </div>
-                            <Button
-                                data-ui={`dashboard.lesson-action.${lesson.id}`}
-                                data-testid={`dashboard-lesson-action-${lesson.id}`}
-                                variant={lesson.completed ? 'secondary' : 'default'}
-                                size="sm"
-                                onClick={() => markLessonComplete(lesson.id)}
-                            >
-                                {lesson.completed ? 'Completed' : 'Mark done'}
-                            </Button>
+                            {lesson.completed ? (
+                                <ButtonSecondary
+                                    data-ui={`dashboard.lesson-action.${lesson.id}`}
+                                    data-testid={`dashboard-lesson-action-${lesson.id}`}
+                                    size="sm"
+                                    onClick={() => markLessonComplete(lesson.id)}
+                                >
+                                    Completed
+                                </ButtonSecondary>
+                            ) : (
+                                <ButtonPrimary
+                                    data-ui={`dashboard.lesson-action.${lesson.id}`}
+                                    data-testid={`dashboard-lesson-action-${lesson.id}`}
+                                    size="sm"
+                                    onClick={() => markLessonComplete(lesson.id)}
+                                >
+                                    Mark done
+                                </ButtonPrimary>
+                            )}
                         </div>
                     ))}
                 </CardContent>

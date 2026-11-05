@@ -1,8 +1,9 @@
 import { useEffect } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 
-import { Button } from '../components/ui/button'
+import { ButtonPrimary, ButtonSecondary } from '../components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../components/ui/card'
+import { TextSmall, TitleLevel1, TitleLevel3 } from '../components/ui/typography'
 import { useAppStore } from '../store/app-store'
 
 export default function ScenarioPage() {
@@ -27,10 +28,10 @@ export default function ScenarioPage() {
             >
                 <div>
                     <p className="text-sm font-semibold uppercase text-sky-700">Scenario detail</p>
-                    <h1 className="mt-1 text-3xl font-semibold">{scenario.title}</h1>
+                    <TitleLevel1 className="mt-1">{scenario.title}</TitleLevel1>
                 </div>
                 <Link data-ui="scenario.back-link" data-testid="scenario-back" to="/dashboard">
-                    <Button variant="secondary">Back to dashboard</Button>
+                    <ButtonSecondary>Back to dashboard</ButtonSecondary>
                 </Link>
             </div>
             <Card data-ui="scenario.lesson-list">
@@ -50,17 +51,26 @@ export default function ScenarioPage() {
                             className="flex items-center justify-between gap-4 rounded-md border border-slate-200 px-4 py-3"
                         >
                             <div>
-                                <p className="font-medium">{lesson.title}</p>
-                                <p className="text-sm text-slate-500">{lesson.duration} minutes</p>
+                                <TitleLevel3 className="text-base">{lesson.title}</TitleLevel3>
+                                <TextSmall>{lesson.duration} minutes</TextSmall>
                             </div>
-                            <Button
-                                data-ui={`scenario.lesson-action.${lesson.id}`}
-                                data-testid={`scenario-lesson-action-${lesson.id}`}
-                                variant={lesson.completed ? 'secondary' : 'default'}
-                                onClick={() => markLessonComplete(lesson.id)}
-                            >
-                                {lesson.completed ? 'Completed' : 'Mark done'}
-                            </Button>
+                            {lesson.completed ? (
+                                <ButtonSecondary
+                                    data-ui={`scenario.lesson-action.${lesson.id}`}
+                                    data-testid={`scenario-lesson-action-${lesson.id}`}
+                                    onClick={() => markLessonComplete(lesson.id)}
+                                >
+                                    Completed
+                                </ButtonSecondary>
+                            ) : (
+                                <ButtonPrimary
+                                    data-ui={`scenario.lesson-action.${lesson.id}`}
+                                    data-testid={`scenario-lesson-action-${lesson.id}`}
+                                    onClick={() => markLessonComplete(lesson.id)}
+                                >
+                                    Mark done
+                                </ButtonPrimary>
+                            )}
                         </div>
                     ))}
                 </CardContent>

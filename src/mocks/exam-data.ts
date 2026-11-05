@@ -194,8 +194,7 @@ export const mockExamQuestions: MockExamQuestion[] = [
             { id: 'd', text: 'renderId' },
         ],
         correctAnswer: 'a',
-        explanation:
-            'React passes nested JSX to a component through its children prop.',
+        explanation: 'React passes nested JSX to a component through its children prop.',
         points: 5,
     },
     {
@@ -246,7 +245,10 @@ export const mockExamQuestions: MockExamQuestion[] = [
         stem: 'Which statements about useEffect dependencies are correct?',
         options: [
             { id: 'a', text: 'Dependencies describe reactive values used by the effect.' },
-            { id: 'b', text: 'An empty dependency array runs the effect after the initial commit.' },
+            {
+                id: 'b',
+                text: 'An empty dependency array runs the effect after the initial commit.',
+            },
             { id: 'c', text: 'Dependencies should be omitted to silence stale-value issues.' },
             { id: 'd', text: 'React compares dependencies between renders.' },
         ],
@@ -266,8 +268,7 @@ export const mockExamQuestions: MockExamQuestion[] = [
             { id: 'd', text: 'The key prop.' },
         ],
         correctAnswer: 'a',
-        explanation:
-            'The setter returned from useState schedules the component state update.',
+        explanation: 'The setter returned from useState schedules the component state update.',
         points: 5,
     },
     {

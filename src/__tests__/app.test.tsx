@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { MemoryRouter, useLocation } from 'react-router-dom'
 import { beforeEach, describe, expect, it } from 'vitest'
@@ -40,7 +40,7 @@ describe('app requirements', () => {
         expect(
             await screen.findByRole('heading', { name: /learning dashboard/i }),
         ).toBeInTheDocument()
-        expect(screen.getAllByText(/student@example.com/i)).toHaveLength(2)
+        expect(screen.getAllByText(/student@example.com/i)).toHaveLength(4)
         expect(screen.getByTestId('navigation-desktop-dashboard')).toBeInTheDocument()
         expect(screen.getByTestId('logout-desktop')).toBeInTheDocument()
         expect(document.querySelector('[data-ui="dashboard.page"]')).toBeInTheDocument()
@@ -68,20 +68,113 @@ describe('app requirements', () => {
             </MemoryRouter>,
         )
 
-        const sidebarToggle = screen.getByTestId('desktop-sidebar-toggle')
-        expect(sidebarToggle.querySelector('svg')).toHaveClass('lucide-chevron-left')
-        await user.click(sidebarToggle)
-        expect(sidebarToggle.querySelector('svg')).toHaveClass('lucide-chevron-right')
+        const mobileMenuToggle = screen.getByTestId('mobile-menu-toggle')
+        expect(mobileMenuToggle.querySelector('svg')).toHaveClass('lucide-menu')
+        await user.click(mobileMenuToggle)
+        expect(mobileMenuToggle.querySelector('svg')).toHaveClass('lucide-x')
 
+        const drawer = screen.getByRole('dialog', { name: 'Mobile navigation' })
+        expect(drawer).toHaveClass('min-h-[360px]', 'flex-col', 'translate-y-0')
+        expect(screen.getByTestId('navigation-mobile-exam').closest('nav')).toHaveClass('flex-1')
+        await user.click(screen.getByTestId('navigation-mobile-exam'))
+        expect(document.querySelector('[data-ui="app.mobile-navigation-drawer"]')).toHaveAttribute(
+            'aria-hidden',
+            'true',
+        )
+        expect(drawer).toHaveClass('translate-y-full')
+        expect(mobileMenuToggle.querySelector('svg')).toHaveClass('lucide-menu')
+    })
+
+    it('places mobile logout inside the navigation menu', async () => {
+        const user = userEvent.setup()
+        useAppStore.setState({
+            user: {
+                id: 'student-1',
+                name: 'Student',
+                email: 'student@example.com',
+                role: 'student',
+            },
+            token: 'test-token',
+        })
+
+        render(
+            <MemoryRouter initialEntries={['/dashboard']}>
+                <App />
+            </MemoryRouter>,
+        )
+
+        const header = document.querySelector('[data-ui="app.header"]')
+        expect(header).not.toBeNull()
+        expect(within(header as HTMLElement).queryByTestId('logout-mobile')).not.toBeInTheDocument()
         await user.click(screen.getByTestId('mobile-menu-toggle'))
 
         const drawer = screen.getByRole('dialog', { name: 'Mobile navigation' })
-        expect(drawer).toHaveClass('min-h-[360px]', 'translate-y-0')
-        await user.click(screen.getByTestId('navigation-mobile-exam'))
-        expect(
-            document.querySelector('[data-ui="app.mobile-navigation-drawer"]'),
-        ).toHaveAttribute('aria-hidden', 'true')
-        expect(drawer).toHaveClass('translate-y-full')
+        await user.click(within(drawer).getByTestId('logout-mobile'))
+
+        expect(useAppStore.getState().user).toBeNull()
+        expect(await screen.findByText('Academy portal')).toBeInTheDocument()
+    })
+
+    it('opens tablet navigation in a left drawer and closes after navigation', async () => {
+        const user = userEvent.setup()
+        useAppStore.setState({
+            user: {
+                id: 'student-1',
+                name: 'Student',
+                email: 'student@example.com',
+                role: 'student',
+            },
+            token: 'test-token',
+        })
+
+        render(
+            <MemoryRouter initialEntries={['/dashboard']}>
+                <App />
+            </MemoryRouter>,
+        )
+
+        const menuToggle = screen.getByTestId('tablet-menu-toggle')
+        expect(menuToggle.querySelector('svg')).toHaveClass('lucide-menu')
+        expect(menuToggle).toHaveAttribute('aria-expanded', 'false')
+        await user.click(menuToggle)
+        expect(menuToggle.querySelector('svg')).toHaveClass('lucide-x')
+
+        const drawer = screen.getByRole('dialog', { name: 'Tablet navigation' })
+        expect(drawer).toHaveClass('translate-x-0')
+        expect(screen.getByTestId('navigation-tablet-exam')).toBeInTheDocument()
+        await user.click(screen.getByTestId('navigation-tablet-exam'))
+        expect(document.querySelector('[data-ui="app.tablet-navigation-drawer"]')).toHaveAttribute(
+            'aria-hidden',
+            'true',
+        )
+        expect(drawer).toHaveClass('-translate-x-full')
+        expect(menuToggle.querySelector('svg')).toHaveClass('lucide-menu')
+    })
+
+    it('uses the X icon while the desktop sidebar is expanded', async () => {
+        const user = userEvent.setup()
+        useAppStore.setState({
+            user: {
+                id: 'student-1',
+                name: 'Student',
+                email: 'student@example.com',
+                role: 'student',
+            },
+            token: 'test-token',
+        })
+
+        render(
+            <MemoryRouter initialEntries={['/dashboard']}>
+                <App />
+            </MemoryRouter>,
+        )
+
+        const sidebarToggle = screen.getByTestId('desktop-sidebar-toggle')
+        expect(sidebarToggle.querySelector('svg')).toHaveClass('lucide-x')
+        await user.click(sidebarToggle)
+        expect(sidebarToggle.querySelector('svg')).toHaveClass('lucide-menu')
+        await user.click(sidebarToggle)
+        expect(sidebarToggle.querySelector('svg')).toHaveClass('lucide-x')
     })
 
     it('exposes stable data-ui markers for the login controls', () => {
@@ -96,6 +189,42 @@ describe('app requirements', () => {
         expect(document.querySelector('[data-ui="login.password-input"]')).toBeInTheDocument()
         expect(document.querySelector('[data-ui="login.password-visibility"]')).toBeInTheDocument()
         expect(document.querySelector('[data-ui="theme.toggle"]')).toBeInTheDocument()
+    })
+
+    it('shows the public component showcase without requiring sign in', async () => {
+        const user = userEvent.setup()
+        render(
+            <MemoryRouter initialEntries={['/components']}>
+                <App />
+            </MemoryRouter>,
+        )
+
+        expect(screen.getByRole('heading', { name: '组件展示' })).toBeInTheDocument()
+        expect(screen.getByText('主题颜色')).toBeInTheDocument()
+        const iconHeading = screen.getByRole('heading', { name: 'Icon' })
+        const colorHeading = screen.getByRole('heading', { name: '主题颜色' })
+        expect(
+            iconHeading.compareDocumentPosition(colorHeading) & Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy()
+        expect(
+            screen.getByRole('heading', { name: 'Button' }).parentElement?.previousElementSibling,
+        ).toHaveTextContent('01')
+        expect(iconHeading.parentElement?.previousElementSibling).toHaveTextContent('04')
+        expect(colorHeading.parentElement?.previousElementSibling).toHaveTextContent('05')
+        expect(iconHeading).toHaveAttribute('id', 'icon-heading')
+        expect(colorHeading).toHaveAttribute('id', 'color-heading')
+        expect(screen.getByRole('button', { name: '主按钮' })).toBeInTheDocument()
+        expect(screen.getByLabelText('邮箱地址')).toBeInTheDocument()
+
+        const iconSection = iconHeading.closest('section')
+        expect(iconSection).not.toBeNull()
+        await user.click(within(iconSection!).getByText('查看示例代码'))
+        expect(iconSection!.querySelector('pre code')).toHaveTextContent("from 'lucide-react'")
+
+        const codeSummary = screen.getAllByText('查看示例代码')[0].closest('summary')
+        expect(codeSummary).not.toBeNull()
+        await user.click(codeSummary!)
+        expect(screen.getByText(/ButtonSecondary/)).toBeInTheDocument()
     })
 
     it('shows a clear error for invalid credentials', async () => {
@@ -294,11 +423,17 @@ describe('app requirements', () => {
         const mobileCountdown = document.querySelector('[data-ui="exam.countdown.mobile"]')
         const questionCard = document.querySelector('[data-ui="exam.question-card"]')
         expect(mobileCountdown).toHaveClass('md:hidden')
-        expect(mobileCountdown!.compareDocumentPosition(questionCard!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+        expect(
+            mobileCountdown!.compareDocumentPosition(questionCard!) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy()
         expect(screen.getByText('Question 1 / 20')).toBeInTheDocument()
         const questionNumber = document.querySelector('[data-ui="exam.question-number"]')
         const questionPrompt = document.querySelector('[data-ui="exam.question-prompt"]')
-        expect(questionNumber!.compareDocumentPosition(questionPrompt!) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+        expect(
+            questionNumber!.compareDocumentPosition(questionPrompt!) &
+                Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy()
         expect(document.querySelector('[data-ui="exam.question-type"]')?.parentElement).toBe(
             screen.getByTestId('exam-mark-review').parentElement,
         )
@@ -388,7 +523,9 @@ describe('app requirements', () => {
             expect(localStorage.getItem('learning-lab-exam-history')).not.toBeNull()
             expect(screen.getByTestId('current-path').textContent).toMatch(/^\/exam\/result\//)
         })
-        expect(await screen.findByRole('heading', { name: /your exam is complete/i })).toBeInTheDocument()
+        expect(
+            await screen.findByRole('heading', { name: /your exam is complete/i }),
+        ).toBeInTheDocument()
         expect(document.querySelector('[data-ui="exam-result.page"]')).toBeInTheDocument()
         expect(document.querySelector('[data-ui="exam-result.summary"]')).toBeInTheDocument()
         expect(screen.getByTestId('exam-result-score')).toHaveTextContent('44')
@@ -405,12 +542,16 @@ describe('app requirements', () => {
         )
         expect(
             resultStatuses.some(
-                (status) => status.textContent?.includes('Correct') && status.querySelector('.lucide-circle-check'),
+                (status) =>
+                    status.textContent?.includes('Correct') &&
+                    status.querySelector('.lucide-circle-check'),
             ),
         ).toBe(true)
         expect(
             resultStatuses.some(
-                (status) => status.textContent?.includes('Incorrect') && status.querySelector('.lucide-circle-x'),
+                (status) =>
+                    status.textContent?.includes('Incorrect') &&
+                    status.querySelector('.lucide-circle-x'),
             ),
         ).toBe(true)
         expect(localStorage.getItem('learning-lab-exam-draft')).toBeNull()
